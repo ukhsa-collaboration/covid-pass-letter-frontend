@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Localization
+<!DOCTYPE html>
+<html lang="@(Context.Features.Get<IRequestCultureFeature>()?.RequestCulture.Culture.Name ?? "en")">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(!ViewData.ModelState.IsValid ? "Error: " : "" )@ViewBag.Title - @ViewBag.ServiceName - NHS</title>
+    <partial name="_LoadStylesheetPartial" />
+    @*Assets can be accessed via https://github.com/nhsuk/nhsuk-frontend*@
+    <link rel="shortcut icon" href="~/lib/nhsuk-frontend/packages/assets/favicons/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="~/lib/nhsuk-frontend/packages/assets/favicons/apple-touch-icon-180x180.png">
+    <link rel="mask-icon" href="~/lib/nhsuk-frontend/packages/assets/favicons/favicon.svg" color="#005eb8">
+    <link rel="icon" sizes="192x192" href="~/lib/nhsuk-frontend/packages/assets/favicons/favicon-192x192.png">
+    <meta name="msapplication-TileImage" content="~/lib/nhsuk-frontend/packages/assets/favicons/mediumtile-144x144.png">
+    <meta name="msapplication-TileColor" content="#005eb8">
+    <meta name="msapplication-square70x70logo" content="~/lib/nhsuk-frontend/packages/assets/favicons/smalltile-70x70.png">
+    <meta name="msapplication-square150x150logo" content="~/lib/nhsuk-frontend/packages/assets/favicons/mediumtile-150x150.png">
+    <meta name="msapplication-wide310x150logo" content="~/lib/nhsuk-frontend/packages/assets/favicons/widetile-310x150.png">
+    <meta name="msapplication-square310x310logo" content="~/lib/nhsuk-frontend/packages/assets/favicons/largetile-310x310.png">
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+    <script nonce="@Context.Items["nonce"]">document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+    <partial name="_Header"/>
+
+    <div class="nhsuk-width-container">
+        @await RenderSectionAsync("BackLink", required: false)
+        <main role="main" class="nhsuk-main-wrapper nhsuk-main-wrapper--s">
+             <partial name="_TimeoutWarningPartial"/>
+            @RenderBody()
+        </main>
+    </div>
+
+    @if(@ViewBag.IsDigital == true)
+    {
+        <partial name="_DigitalOnlyFooter"/>
+    } else
+    {
+        <partial name="_Footer"/>
+    }
+
+    <script nonce="@Context.Items["nonce"]">
+        /* 
+            • each time the page loads it will look for an invalid <input /> field (i.e. within an invalid form)
+            • should a matching invalid DOM element be found, keyboard focus is put onto it
+        */
+        document.addEventListener("DOMContentLoaded", function () {
+            var firstInvalidInputField = document.getElementsByClassName("input-validation-error")[0];
+
+            if (firstInvalidInputField) {
+                firstInvalidInputField.focus();
+            }
+        });
+    </script>
+
+    <partial name="_LoadJavascriptPartial"/>
+    <script src="~/lib/nhsuk-frontend/dist/nhsuk-5.1.0.min.js" asp-append-version="true" nonce="@Context.Items["nonce"]"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

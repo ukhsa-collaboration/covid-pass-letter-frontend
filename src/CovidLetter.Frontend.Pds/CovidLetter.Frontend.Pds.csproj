@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CovidLetter.Frontend.AccessTokenCache\CovidLetter.Frontend.AccessTokenCache.csproj" />
+    <ProjectReference Include="..\CovidLetter.Frontend.Extensions\CovidLetter.Frontend.Extensions.csproj" />
+  </ItemGroup>
+</Project>

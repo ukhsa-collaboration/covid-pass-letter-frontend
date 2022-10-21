@@ -1,0 +1,122 @@
+﻿@using CovidLetter.Frontend.WebApp.Constants
+@using CovidLetter.Frontend.WebApp.Services
+@model ContactPreferenceViewModel
+@inject IViewLocalizer Localizer
+
+@{
+    var obfuscatedEmailOrMobile = Model.ObfuscatedContactDetails.Any();
+
+    string backButtonController = "";
+    string backButtonAction = "";
+
+    if (obfuscatedEmailOrMobile)
+    {
+        ViewBag.Title = Localizer["title"];
+    }
+    else
+    {
+        ViewBag.Title = Localizer["noContactOptionsTitle"];
+    }
+
+
+    if (Model.postcodeIsWelsh)
+    {
+        backButtonController = UIConstants.Home.HomeController;
+        backButtonAction = "CheckAnswers";
+    } 
+    else
+    {
+        backButtonController = UIConstants.Outcome.OutcomeController;
+
+        if (Model.userRequestAlternativeLanguage) {
+            backButtonAction = "Languages";
+        } else {
+            backButtonAction = "EligibilityForLetter";
+        }
+    }
+    
+    var backButtonModel = ViewServices.GenerateBackButtonModelUsingControllerAndAction(@backButtonAction, @backButtonController);
+}
+
+@section BackLink
+{
+    <partial name="_BackButton" model="backButtonModel"/>
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form method="post" asp-action="ContactPreference">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary"/>
+            }
+
+            <nhs-form-group>
+                <fieldset class="nhsuk-fieldset">
+                    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                        <h1 class="nhsuk-fieldset__heading" id="page-title">
+                            @ViewBag.Title
+                        </h1>
+                    </legend>
+                    
+                    @if (obfuscatedEmailOrMobile)
+                    {
+                        <div class="nhsuk-hint" id="name-hint">
+                            <p>@Localizer["hint"]</p>
+                            <p>@Localizer["hint1"]</p>
+                        </div>
+
+                        <span nhs-validation-for="Selection"></span>
+
+                        <div class="nhsuk-radios radio-button-text-line-break">
+                            @for (int i = 0; i < Model.ObfuscatedContactDetails.Count; i++)
+                            {
+                                var resourceKey = Model.ObfuscatedContactDetails.ElementAt(i).Value.Contains("@") ? "email" : "text";
+                                <div class="nhsuk-radios__item">
+                                    <input class="nhsuk-radios__input"
+                                        type="radio"
+                                        id="@(i == 0 ? "Selection" : $"text_{i + 1}")"
+                                        asp-for="Selection"
+                                        value="@Model.ObfuscatedContactDetails.ElementAt(i).Key"
+                                        aria-description="@ViewBag.Title"/>
+                                    <label class="nhsuk-label nhsuk-radios__label" for="@(i == 0 ? "Selection" : $"text_{i + 1}")">
+                                        @Localizer[resourceKey, Model.ObfuscatedContactDetails.ElementAt(i).Value]
+                                    </label>
+                                </div>
+                            }
+
+                            <div class="nhsuk-radios__item">
+                                <input class="nhsuk-radios__input"
+                                       type="radio"
+                                       id="donotcontact"
+                                       asp-for="Selection"
+                                       value="@Guid.Empty"
+                                       aria-description="@ViewBag.Title"/>
+                                <label class="nhsuk-label nhsuk-radios__label" for="donotcontact">
+                                    @Localizer["noContact"]
+                                </label>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="nhsuk-hint" id="name-hint">
+                            <p>@Localizer["noContactOptions1"]</p>
+
+                            <p>@Localizer["noContactOptions2", "https://www.nhs.uk/conditions/coronavirus-covid-19/nhs-covid-pass/who-can-get-an-nhs-covid-pass/who-can-get-an-nhs-covid-pass-for-travel/", @Localizer["externalLinkNewTab"], @Localizer["noContactOptions2Link1"]]</p>
+
+                            <p>@Localizer["noContactOptions3", "https://www.nhs.uk/conditions/coronavirus-covid-19/nhs-covid-pass/get-an-nhs-covid-pass/", @Localizer["externalLinkNewTab"], @Localizer["noContactOptions3Link1"], "https://www.nhs.uk/nhs-app/", @Localizer["externalLinkNewTab"], @Localizer["noContactOptions3Link2"]]</p>
+
+                            <p>@Localizer["noContactOptions4", "https://www.nhs.uk/contact-us/vaccine-record-help/", @Localizer["externalLinkNewTab"], @Localizer["noContactOptions4Link1"]]</p>
+
+                        </div>
+                    }
+                </fieldset>
+            </nhs-form-group>
+
+            <button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["continue"]
+            </button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+@using Microsoft.Extensions.Options
+@using CovidLetter.Frontend.WebApp.Configuration
+@inject IOptions<SiteConfiguration> SiteConfiguration
+@inject IViewLocalizer Localizer
+
+@{
+    ViewBag.Title = Localizer["title"];
+    var startPage = SiteConfiguration.Value.StartPage;
+}
+
+<h1 id="page-title">@Localizer["subtitle"]</h1>
+<p>@Localizer["hint"]</p>
+
+<a href="@startPage" id="backToHomeLink" role="button" draggable="false" class="nhsuk-button ">
+    @Localizer["back"]
+</a>

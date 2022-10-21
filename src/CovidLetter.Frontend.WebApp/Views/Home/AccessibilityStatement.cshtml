@@ -1,0 +1,36 @@
+﻿@inject IViewLocalizer Localizer;
+@{
+    ViewBag.Title = Localizer["group1-title"];
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <h1 id="page-title">
+            @ViewBag.Title
+        </h1>
+        <p>@Localizer["group1-paragraph1"]</p>
+        <p>
+            @Localizer["group1-paragraph2", @Localizer["group1-paragraph2-link1-href"], @Localizer["internalLinkNewTab"], @Localizer["group1-paragraph2-link1-text"]]
+        </p>
+
+        <h2>@Localizer["group2-header"]</h2>
+        <p>
+            @Localizer["group2-paragraph1", @Localizer["group2-paragraph1-link1-href"], @Localizer["externalLinkNewTab"], @Localizer["group2-paragraph1-link1-text"]]
+        </p>
+
+        <h2>@Localizer["group3-header"]</h2>
+        <p>@Localizer["group3-paragraph1"]</p>
+        <p>@Localizer["group3-paragraph2"]</p>
+        <p>@Localizer["group3-paragraph3"]</p>
+        <p>@Localizer["group3-paragraph4"]</p>
+
+        <h2>@Localizer["group4-header"]</h2>
+        <p>@Localizer["group4-paragraph1"]</p>
+        <p>@Localizer["group4-paragraph2", @Localizer["group4-paragraph2-link1-href"], @Localizer["mailToAria"], @Localizer["group4-paragraph2-link1-text"]]</p>
+        <p>@Localizer["group4-paragraph3", @Localizer["group4-paragraph3-link1-href"], @Localizer["externalLinkNewTab"], @Localizer["group4-paragraph3-link1-text"]]</p>
+
+        <h2>@Localizer["group5-title"]</h2>
+        <p>@Localizer["group5-paragraph1"]</p>
+        <p>@Localizer["group5-paragraph2", @Localizer["group5-paragraph2-link1-href"], @Localizer["externalLinkNewTab"], @Localizer["group5-paragraph2-link1-text"]]</p>
+    </div>
+</div>

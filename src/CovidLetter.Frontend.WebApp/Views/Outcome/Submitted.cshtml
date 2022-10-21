@@ -1,0 +1,81 @@
+﻿@model SubmittedModel
+@using Microsoft.Extensions.Options
+@using CovidLetter.Frontend.WebApp.Configuration
+@inject IOptions<SiteConfiguration> SiteConfiguration
+@inject IViewLocalizer Localizer
+
+@{
+    ViewBag.Title = Localizer["title"];
+    var startPage = SiteConfiguration.Value.StartPage;
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <div class="nhsuk-form-group">
+            <div class="application-complete-banner">
+                <div class="body-text">
+                    <h1> @Localizer["title"]</h1>
+                </div>
+            </div>
+
+            <p class="nhsuk-body">
+                @Localizer["secondaryBody"]
+            </p>
+        </div>
+
+        <div class="nhsuk-form-group">
+            <h2 class="nhsuk-heading-m">
+                @Localizer["subsection1Title"]
+            </h2>
+            <p class="nhsuk-body">
+                @Localizer["subsection1Body"]
+            </p>
+        </div>
+
+        <div class="nhsuk-form-group">
+            <h2 class="nhsuk-heading-m">
+                @Localizer["subsection2Title"]
+            </h2>
+            <p class="nhsuk-body">
+                @Localizer["subsection2Body"]
+            </p>
+        </div>
+        <partial name="_SurveyBanner" />
+    </div>
+</div>
+
+@section Scripts {
+    <script nonce="@Context.Items["nonce"]">
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector("#survey-yes-button").addEventListener("click", function(e) {
+                var surveyBanner = document.getElementById("survey-banner");
+                var surveyUrl;
+                
+                if (@Model.IsRequestForSomeoneElse.ToString().ToLower()) {
+                    if (@Model.Is16OrOver.ToString().ToLower()) {
+                        surveyUrl = '@Localizer["surveyUrlOver16RequestForSomeoneElse"]';
+                    }
+                    else {
+                        if (@Model.IsInWales.ToString().ToLower()) {
+                            surveyUrl = '@Localizer["surveyUrlUnder16RequestForSomeoneElseWales"]';
+                        }
+                        else {
+                            surveyUrl = '@Localizer["surveyUrlUnder16RequestForSomeoneElseEngland"]';
+                        }
+                    };
+                }
+                else {
+                    surveyUrl = '@Localizer["surveyUrlForSelf"]';
+                };
+                
+                surveyBanner.classList.add("nhsuk-element-hidden");
+                window.open(surveyUrl, '_blank');
+            });
+        });
+
+        document.querySelector("#survey-no-button").addEventListener("click", function(e) {
+            var surveyBanner = document.getElementById("survey-banner");
+            surveyBanner.classList.add("nhsuk-element-hidden");
+        });
+    </script>
+}

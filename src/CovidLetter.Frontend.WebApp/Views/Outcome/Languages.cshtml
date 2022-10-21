@@ -1,0 +1,71 @@
+﻿@using CovidLetter.Frontend.WebApp.Constants
+@using CovidLetter.Frontend.WebApp.TagHelpers
+@using CovidLetter.Frontend.WebApp.Services
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Localization
+@model LanguagesViewModel
+@inject IViewLocalizer Localizer
+@inject IStringLocalizer<Languages> LanguagesLocalizer
+
+@{
+    ViewBag.Title = Localizer["title"];
+    var language = Languages.Codes.FirstOrDefault();
+    var backButtonModel = ViewServices.GenerateBackButtonModelUsingControllerAndAction("EligibilityForLetter", @UIConstants.Outcome.OutcomeController);
+}
+
+@section BackLink
+{
+    <partial name="_BackButton" model="backButtonModel"/>
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form asp-action="Languages" method="post">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary" />
+            }
+
+            <nhs-form-group>
+                <fieldset class="nhsuk-fieldset">
+                    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                        <h1 class="nhsuk-fieldset__heading" id="page-title">
+                            @ViewBag.Title
+                        </h1>
+                    </legend>
+
+                    <div class="nhsuk-hint" id="language-hint">
+                         @Localizer["hint"]
+                    </div>
+
+                    <div class="nhsuk-hint" id="language-hint">
+                         @Localizer["hint1"]
+                    </div>
+
+                    <div class="nhsuk-hint" id="language-hint">
+                         @Localizer["hint2","https://www.gov.uk/government/publications/what-your-nhs-covid-pass-letter-tells-you", @Localizer["externalLinkSameTab"],@Localizer["hint2Link"]]
+                    </div>
+
+                    <span nhs-validation-for="Language"></span>
+
+                    <div class="nhsuk-radios">
+                        @foreach (var languageCode in Languages.Codes)
+                        {
+                            var id = languageCode == language ? "Language" : $"language_{languageCode}";
+                            <div class="nhsuk-radios__item">
+                                <input class="nhsuk-radios__input" id="@id" asp-for="Language" type="radio" value="@languageCode" data-name="@LanguagesLocalizer[languageCode]" aria-description="@ViewBag.Title">
+                                <label class="nhsuk-label nhsuk-radios__label" for="@id">
+                                    @LanguagesLocalizer[languageCode]
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </fieldset>
+            </nhs-form-group>
+
+            <button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["continue"]
+            </button>
+        </form>
+    </div>
+</div>

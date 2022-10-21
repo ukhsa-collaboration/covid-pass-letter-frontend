@@ -1,0 +1,62 @@
+﻿@using Microsoft.Extensions.Options
+@using CovidLetter.Frontend.WebApp.Configuration
+@using CovidLetter.Frontend.WebApp.Services.SessionTimeoutService
+@using CovidLetter.Frontend.WebApp.Constants
+@inject IOptions<AuthenticationConfiguration> OptionsAuthenticationConfig
+@inject IViewLocalizer Localizer
+
+@if (!IRedirectOnSessionTimeoutWhitelistService.IsCurrentRouteWhitelistedToBypassSessionTimeout(ViewContext.RouteData))
+{
+    <text>
+        <style>
+            #nhsuk-timeout-warning-fallback-wrapper {
+                animation-name: loadTimeoutWarningIfJsDisabled;
+                animation-duration: 1s;
+                animation-delay: @((OptionsAuthenticationConfig.Value.ExpireMinutes - OptionsAuthenticationConfig.Value.SessionExpireNotificationMinutes) * 60)s;
+                animation-fill-mode: forwards;
+                opacity: 0;
+                max-height: 0;
+                visibility: hidden;
+            }
+        </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.5.0/dialog-polyfill.js" integrity="sha384-wJefI0TzyY/zn7Cfy9uUgtEFv4TltoqVCIl7/hGnmgfWwf4xhhhTRBrSw230lCL7" crossorigin="anonymous" nonce="@Context.Items["nonce"]"></script>
+
+        <div id="nhsuk-timeout-warning-fallback-wrapper">
+            <div aria-live="assertive" id="nhsuk-timeout-warning-fallback"
+                 class="nhsuk-notification-banner" role="region" aria-labelledby="nhsuk-notification-banner-title" data-module="nhsuk-notification-banner">
+                <div class="nhsuk-warning-callout">
+                    <h3 class="nhsuk-warning-callout__label" id="nhsuk-notification-banner-title">
+                        <span>
+                            <span class="nhsuk-u-visually-hidden">@Localizer["title"] </span>
+                            @Localizer["subtitle"]"
+                        </span>
+                    </h3>
+                    <p>@Localizer["hint", OptionsAuthenticationConfig.Value.SessionExpireNotificationMinutes]</p>
+                </div>
+            </div>
+        </div>
+
+        <dialog class="nhsuk-timeout-warning nhsuk-!-padding-6 dialog" data-module="nhsuk-timeout-warning"
+                id="js-timeout-warning"
+                data-minutes-idle-timeout="@OptionsAuthenticationConfig.Value.ExpireMinutes"
+                data-minutes-modal-visible="@OptionsAuthenticationConfig.Value.SessionExpireNotificationMinutes"
+                data-url-expired-redirect="@UIConstants.Home.SessionExpiredPath"
+                data-keep-alive-url="/KeepSessionAlive"
+                data-is-override-timeout-back-button="false"
+                data-override-timeout-back-button-url="/"
+                role="dialog"
+                aria-live="polite"
+                aria-labelledby="dialog-title"
+                aria-describedby="at-timer">
+            <h1 id="dialog-title" class="nhsuk-heading-l">
+                @Localizer["subtitle"]
+            </h1>
+            <div class="nhsuk-body-m">
+                <div class="timer" aria-hidden="true" aria-relevant="additions"></div>
+                <div class="at-timer nhsuk-u-visually-hidden" role="status" id="at-timer"></div>
+            </div>
+            <button class="nhsuk-button dialog-button js-dialog-close-keepalive" data-module="nhsuk-button">@Localizer["keepAlive"]</button>
+            <button class="nhsuk-button dialog-button js-dialog-close-logout" data-module="nhsuk-button">@Localizer["logout"]</button>
+        </dialog>
+    </text>
+}

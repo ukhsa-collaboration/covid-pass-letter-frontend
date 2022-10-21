@@ -1,0 +1,81 @@
+﻿@model WhoAreYouRequestingForModel
+@using Microsoft.Extensions.Options
+@using CovidLetter.Frontend.WebApp.Configuration
+@using CovidLetter.Frontend.WebApp.Services
+@inject IOptions<SiteConfiguration> SiteConfiguration
+@inject IViewLocalizer Localizer;
+
+@{
+    ViewBag.Title = Localizer["title"];
+
+    var forSomeoneElse = Model.RequestingFor == RequestFor.SomeoneElse;
+    var radioConditionalClass = forSomeoneElse
+        ? string.Empty
+        : "nhsuk-radios__conditional--hidden";
+    var backButtonModel = ViewServices.GenerateBackButtonModelUsingHref(@SiteConfiguration.Value.StartPage);
+}
+
+@if (!ViewBag.IsDigital)
+{
+    @section BackLink
+    {
+        <partial name="_BackButton" model="backButtonModel"/>
+    }
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form asp-action="WhoAreYouRequestingFor" method="post">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary"/>
+            }
+            <nhs-form-group>
+                <fieldset class="nhsuk-fieldset">
+                    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                        <h1 class="nhsuk-fieldset__heading" id="page-title">
+                            @ViewBag.Title
+                        </h1>
+                    </legend>
+
+                    <span nhs-validation-for="RequestingFor"></span>
+
+                    <div class="nhsuk-radios nhsuk-radios--conditional">
+
+                        <div class="nhsuk-radios__item">
+                            <input class="nhsuk-radios__input" id="@Html.IdFor(m => m.RequestingFor)_myself" asp-for="RequestingFor" type="radio" value="@RequestFor.Myself" aria-description="@ViewBag.Title">
+                            <label class="nhsuk-label nhsuk-radios__label" for="@Html.IdFor(m => m.RequestingFor)_myself">
+                                @Localizer["requestingForMyself"]
+                            </label>
+                        </div>
+
+                        <div class="nhsuk-radios__item">
+                            <input class="nhsuk-radios__input" id="@Html.IdFor(m => m.RequestingFor)_under12" asp-for="RequestingFor" type="radio" value="@RequestFor.SomeoneElse" aria-description="@ViewBag.Title" aria-controls="conditional-@Html.IdFor(m => m.IsParentOrGuardian)">
+                            <label class="nhsuk-label nhsuk-radios__label" for="@Html.IdFor(m => m.RequestingFor)_under12">
+                                @Localizer["requestingForSomeoneElse"]
+                            </label>
+                        </div>
+
+                        <div class="nhsuk-radios__conditional @radioConditionalClass" id="conditional-@Html.IdFor(m => m.IsParentOrGuardian)">
+                            <nhs-form-group>
+                                <span nhs-validation-for="IsParentOrGuardian"></span>
+                                <div class="nhsuk-checkboxes">
+                                    <div class="nhsuk-checkboxes__item">
+                                        <input class="nhsuk-checkboxes__input" error-class-toggle="nhsuk-input--error" asp-for="IsParentOrGuardian" type="checkbox" value="true">
+                                        <label class="nhsuk-label nhsuk-checkboxes__label" asp-for="IsParentOrGuardian">
+                                            @Localizer["confirmParentLegalGuardian"]
+                                        </label>
+                                    </div>
+                                </div>
+                            </nhs-form-group>
+                        </div>
+                    </div>
+                </fieldset>
+            </nhs-form-group>
+
+            <button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["continue"]
+            </button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,325 @@
+<environment include="Development">
+    <link rel="stylesheet" href="~/lib/nhsuk-frontend/dist/nhsuk-5.1.0.min.css" />
+    <link rel="stylesheet" href="~/lib/nhsuk-frontend-extensions/stylesheets/nhsuk-frontend-extensions.css">
+</environment>
+
+<environment exclude="Development">
+    <link rel="stylesheet" href="~/css/all.min.css" asp-append-version="true">
+</environment>
+
+<style>
+    .inc-letter-tick {
+        vertical-align: middle;
+        display: inline-block;
+    }
+
+    .inc-letter-tick .nhsuk-icon__tick {
+        vertical-align: middle;
+        display: inline-block;
+        margin: 0 6px;
+    }
+
+    .nhsuk-icon__exclamation_mark {
+        height: 100%;
+        margin: auto !important;
+    }
+
+    .application-complete-banner {
+        background-color: #0c7443;
+        color: #fff;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .application-complete-banner .body-text {
+        margin: 0px;
+    }
+
+    .application-complete-banner .body-text h1 {
+        margin: 0px;
+        padding: 3.7rem 0rem;
+        font-size: 2.5rem;
+    }
+
+    .nhsuk-store-badge-nhs-app-top-container {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 15px;
+    }
+
+    .small-margin-right {
+        margin-right: 15px;
+    }
+
+    .no-margin-bottom {
+        margin-bottom: 0px;
+    }
+
+    .nhsuk-store-badge-nhs-app-container {
+        text-decoration: none;
+    }
+    
+    .nhsuk-store-badge-nhs-app {
+        max-height: 40px;
+    }
+
+    .survey-banner {
+        background-color: #005eb8;
+        color: white;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        position: relative;
+    }
+
+    .survey-button {
+        width: 40% !important;
+        position: relative;
+        bottom: 0px !important;
+    }
+
+
+    @@media (max-width: 385px) {
+        .nhsuk-store-badge-nhs-app-top-container {
+            flex-direction: column;
+        }
+    }
+
+    /* 
+        Ensures the first table column on the "check your answers" page
+        is given a width of 30% (larger screen sizes only)
+    */
+    @@media (min-width: 769px) {
+        .nhsuk-check-answers-first-column-width {
+            width: 30%;
+        }
+    }
+    
+    /* 
+        Ensures no bottom border is shown in-between the table data items
+        (per row) on the "check your answers" page table (smaller screen sizes only)
+    */
+    @@media (max-width: 768px) {
+        .nhsuk-check-answers-table tbody tr td {
+            border-bottom: none;
+        }
+    }
+
+    .radio-button-text-line-break {
+        word-break: break-word;
+    }
+
+    .nhsuk-element-hidden {
+        display: none;
+    }
+
+    .nhsuk-check-answers-text-right {
+        text-align: right;
+    }
+
+    .nhsuk-input {
+        height: auto;
+        min-height: 40px;
+    }
+    
+    .nhsuk-details-custom {
+        color:#212b32;
+        margin-bottom:16px;
+        font-size:19px;
+        line-height:1.5;
+        display:block;
+        padding-left: 24px;
+    }
+    
+    .nhsuk-details-custom__summary {
+        color:#005eb8;
+        cursor:pointer;
+        display:inline-block;
+        padding-left:24px;
+        position:relative
+    }
+    
+    .nhsuk-details-custom__summary:hover {
+        color:#7c2855
+    }
+    
+    .nhsuk-details-custom__summary:before {
+        bottom:0;
+        content:"";
+        left:0;
+        margin:auto;
+        position:absolute;
+        top:0;
+        display:block;
+        width:0;
+        height:0;
+        border-style:solid;
+        border-color:transparent;
+        clip-path:polygon(0 0,100% 50%,0 100%);
+        border-width:7px 0 7px 12.124px;
+        border-left-color:inherit
+    }
+    
+    .nhsuk-details-custom__summary:focus {
+        background-color:#ffeb3b;
+        box-shadow:0 -2px #ffeb3b,0 4px #212b32;
+        color:#212b32;
+        outline:4px solid transparent;
+        text-decoration:none
+    }
+    
+    .nhsuk-details-custom__summary:focus .nhsuk-icon {
+        fill:#212b32
+    }
+    
+    .nhsuk-details-custom__summary:focus .nhsuk-details-custom__summary-text,.nhsuk-details-custom__summary:hover .nhsuk-details-custom__summary-text {
+        text-decoration:none
+    }
+    
+    .nhsuk-details-custom[open]>.nhsuk-details-custom__summary:before {
+        display:block;
+        width:0;
+        height:0;
+        border-style:solid;
+        border-color:transparent;
+        clip-path:polygon(0 0,50% 100%,100% 0);
+        border-width:12.124px 7px 0 7px;
+        border-top-color:inherit
+    }
+    
+    .nhsuk-details-custom__summary-text {
+        text-decoration:underline
+    }
+    
+    .nhsuk-details-custom__summary::-webkit-details-marker {
+        display:none
+    }
+    
+    .nhsuk-details-custom__text {
+        border-left:4px solid #d8dde0;
+        margin-top:8px;
+        padding:16px;
+        padding-left:20px
+    }
+    
+    .nhsuk-details-custom__text>:first-child {
+        margin-top:0
+    }
+    
+    .nhsuk-details-custom__text>:last-child {
+        margin-bottom:0
+    }
+    
+    .nhsuk-expander-custom[open] {
+        border-bottom-width:1px
+    }
+    
+    .nhsuk-expander-custom[open] .nhsuk-details__summary:focus:hover .nhsuk-details__summary-text {
+        text-decoration:none
+    }
+    
+    .nhsuk-expander-custom[open] .nhsuk-details__summary:focus .nhsuk-details__summary-text::before {
+        background:#ffeb3b url("data:image/svg+xml,%3Csvg class='nhsuk-icon nhsuk-icon__minus' xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' aria-hidden='true'%3E%3Ccircle cx='12' cy='12' r='10' fill='002f5c'%3E%3C/circle%3E%3Cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M8 12h8'%3E%3C/path%3E%3C/svg%3E%0A") left -2px center no-repeat
+    }
+    
+    .nhsuk-expander-custom[open] .nhsuk-details__summary-text::before {
+        background:url("data:image/svg+xml,%3Csvg class='nhsuk-icon nhsuk-icon__minus' xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' aria-hidden='true'%3E%3Ccircle cx='12' cy='12' r='10' fill='%23005eb8'%3E%3C/circle%3E%3Cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M8 12h8'%3E%3C/path%3E%3C/svg%3E%0A") left -2px center no-repeat
+    }
+    
+    .nhsuk-details-custom__summary {
+        color:#005eb8;
+        cursor:pointer;
+        display:inline-block;
+        padding-left:24px;
+        position:relative
+    }
+    
+    .nhsuk-details-custom__summary:hover {
+        color:#7c2855
+    }
+    
+    .nhsuk-details-custom__summary:before {
+        bottom:0;
+        content:"";
+        left:0;
+        margin:auto;
+        position:absolute;
+        top:0;
+        display:block;
+        width:0;
+        height:0;
+        border-style:solid;
+        border-color:transparent;
+        clip-path:polygon(0 0,100% 50%,0 100%);
+        border-width:7px 0 7px 12.124px;
+        border-left-color:inherit
+    }
+    
+    .nhsuk-details-custom__summary:focus {
+        background-color:#ffeb3b;
+        box-shadow:0 -2px #ffeb3b,0 4px #212b32;
+        color:#212b32;
+        outline:4px solid transparent;
+        text-decoration:none
+    }
+    
+    .nhsuk-details-custom__summary:focus .nhsuk-icon {
+        fill:#212b32
+    }
+    
+    .nhsuk-details-custom__summary:focus .nhsuk-details-custom__summary-text,.nhsuk-details-custom__summary:hover .nhsuk-details-custom__summary-text {
+        text-decoration:none
+    }
+    
+    .nhsuk-details-custom[open]>.nhsuk-details-custom__summary:before {
+        display:block;
+        width:0;
+        height:0;
+        border-style:solid;
+        border-color:transparent;
+        clip-path:polygon(0 0,50% 100%,100% 0);
+        border-width:12.124px 7px 0 7px;
+        border-top-color:inherit
+    }
+    
+    .nhsuk-details-custom__summary-text {
+        text-decoration:underline
+    }
+    
+    .nhsuk-details-custom__summary::-webkit-details-marker {
+        display:none
+    }
+
+    .header-custom-container {
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .nhsuk-header__menu-toggle {
+        display: block;
+    }
+
+    .header-custom-button-container {
+        flex: 1 1 20%;
+        display: flex;
+        justify-content: end;
+    }
+
+    .header-custom-title-container {
+        flex: 1 1 80%;
+    }
+
+    @@media (max-width: 500px) {
+        .header-custom-container {
+            flex-direction: column;
+        }
+
+        #content-header {
+            align-self: start;
+        }
+
+        .nhsuk-header__menu-toggle {
+            right: 0px;
+        }
+    }
+</style>

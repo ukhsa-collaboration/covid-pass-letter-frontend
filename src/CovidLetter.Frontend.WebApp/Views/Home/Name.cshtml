@@ -1,0 +1,62 @@
+﻿@using CovidLetter.Frontend.WebApp.Services
+@using CovidLetter.Frontend.WebApp.Constants
+@inject IViewLocalizer Localizer
+@model NameViewModel
+
+@{
+    ViewBag.Title = Localizer["title"];
+    var backButtonModel = ViewServices.GenerateBackButtonModelUsingControllerAndAction("NhsNumber", @UIConstants.Home.HomeController);
+}
+
+@section BackLink
+{
+    <partial name="_BackButton" model="backButtonModel"/>
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form asp-action="Name" method="post">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary"/>
+            }
+
+            <nhs-form-group>
+                <fieldset class="nhsuk-fieldset">
+                    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                        <h1 class="nhsuk-fieldset__heading" id="page-title">
+                            @ViewBag.Title
+                        </h1>
+                    </legend>
+
+                    <div class="nhsuk-hint" id="name-hint">
+                        <p>@Localizer["hint1"]</p>
+                        <p>@Localizer["hint2"]</p>
+                    </div>
+
+                    <nhs-form-group>
+                        <label class="nhsuk-label" for="FirstName">
+                            @Localizer["firstName"]
+                        </label>
+                        <span nhs-validation-for="FirstName"></span>
+                        <input class="nhsuk-input" error-class-toggle="nhsuk-input--error" id="FirstName" asp-for="FirstName" type="text" aria-description="@ViewBag.Title" aria-required="true">
+                    </nhs-form-group>
+
+                    <nhs-form-group>
+                        <label class="nhsuk-label" for="LastName">
+                            @Localizer["lastName"]
+                        </label>
+                        <span nhs-validation-for="LastName"></span>
+                        <input class="nhsuk-input" error-class-toggle="nhsuk-input--error" id="LastName" asp-for="LastName" type="text" aria-description="@ViewBag.Title" aria-required="true">
+                    </nhs-form-group>
+                </fieldset>
+            </nhs-form-group>
+            
+            <partial name="_RequestingForSomeoneElse"/>
+
+            <button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["continue"]
+            </button>
+        </form>
+    </div>
+</div>

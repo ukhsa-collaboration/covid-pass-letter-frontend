@@ -1,0 +1,32 @@
+﻿@using Microsoft.Extensions.Options
+@using CovidLetter.Frontend.WebApp.Configuration
+@inject IOptions<SiteConfiguration> SiteConfiguration
+@inject IViewLocalizer Localizer
+
+@{
+    ViewBag.Title = Localizer["title"];
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <h1 class="nhsuk-heading-l" id="page-title">@Localizer["title"]</h1>
+        <p>@Localizer["hint1"]</p>
+        
+        <details class="nhsuk-details">
+            <summary class="nhsuk-details__summary">
+                <span class="nhsuk-details__summary-text">
+                    @Localizer["detailsTitle"]
+                </span>
+            </summary>
+            <div class="nhsuk-details__text">
+                <p>@Localizer["detailsParagraph"]</p>
+            </div>
+        </details>
+        
+        <form method="post" asp-action="RequestNewOtpCode">
+            <button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["newCodeButton"]
+            </button>
+        </form>
+    </div>
+</div>

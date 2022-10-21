@@ -1,0 +1,179 @@
+﻿@inject IViewLocalizer Localizer
+@model ImmediatePassViewModel
+
+@{
+    ViewBag.Title = Localizer["title"];
+    var yesToUpliftRadioButtonLabel = Model.UserHasEmailOnPdsRecord == true ? Localizer["continueToVerifyEmailLabel"] : Localizer["continueToVerifyMobileLabel"];
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form asp-action="ImmediatePass" method="post">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary" />
+            }
+
+            <nhs-form-group>
+                <fieldset class="nhsuk-fieldset">
+                    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                        <h1 class="nhsuk-fieldset__heading" id="page-title">
+                            @ViewBag.Title
+                        </h1>
+                    </legend>
+
+                    <div class="nhsuk-hint" id="uplift-to-digital-hint">
+                        <p>@Localizer["hint1"]</p>
+                        @{
+                            if (Model.RequestFor == RequestFor.Myself) {
+                                if (Model.UserHasEmailOnPdsRecord == true && Model.UserHasMobileOnPdsRecord == true)
+                                {
+                                    <p>@Localizer["hint2MyselfEmailAndMobile"]</p>
+                                }
+                                else if (Model.UserHasEmailOnPdsRecord == true)
+                                {
+                                    <p>@Localizer["hint2MyselfEmail"]</p>
+                                }
+                                else
+                                {
+                                    <p>@Localizer["hint2MyselfMobile"]</p>
+                                }
+                            } else if (Model.RequestFor == RequestFor.SomeoneElse) {
+                                if (Model.UserHasEmailOnPdsRecord == true && Model.UserHasMobileOnPdsRecord == true)
+                                {
+                                    <p>@Localizer["hint2SomeoneElseEmailAndMobile"]</p>
+                                }
+                                else if (Model.UserHasEmailOnPdsRecord == true)
+                                {
+                                    <p>@Localizer["hint2SomeoneElseEmail"]</p>
+                                }
+                                else
+                                {
+                                    <p>@Localizer["hint2SomeoneElseMobile"]</p>
+                                }
+                            }
+                        }
+                    </div>
+    
+                    <div class="nhsuk-radios">
+                        <div class="nhsuk-radios__item">
+                            <input class="nhsuk-radios__input" id="DigitalUpliftRequested" type="radio" value="true" asp-for="UserRequestedDigitalPass" aria-description="@ViewBag.Title" checked>
+                            <label class="nhsuk-label nhsuk-radios__label" for="DigitalUpliftRequested">
+                                @Localizer["yes"]
+                            </label>
+                        </div>
+
+                         @{
+                            if (Model.UserHasEmailOnPdsRecord == true && Model.UserHasMobileOnPdsRecord == true) {
+                                <div class="nhsuk-radios__conditional" id="conditonalRadioGroup">
+                                    <div class="nhsuk-form-group" role="group">
+                                        <div class="nhsuk-radios__item">
+                                            <input class="nhsuk-radios__input" id="emailChoiceRadio" asp-for="verifyMethod" type="radio" value="@ImmediateVerifyMethod.email" aria-description="@ViewBag.Title">
+                                            <label class="nhsuk-label nhsuk-radios__label" for="emailChoiceRadio">
+                                                @Localizer["emailChoice"]
+                                                <div class="nhsuk-hint no-margin-bottom">
+                                                    @Localizer["emailChoiceHint"]
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="nhsuk-radios__item">
+                                            <input class="nhsuk-radios__input" id="mobileChoiceRadio" asp-for="verifyMethod" type="radio" value="@ImmediateVerifyMethod.phone" aria-description="@ViewBag.Title">
+                                            <label class="nhsuk-label nhsuk-radios__label" for="mobileChoiceRadio">
+                                                @Localizer["mobileChoice"]
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <div class="nhsuk-radios__item">
+                            <input class="nhsuk-radios__input" id="DigitalUpliftNotRequested" asp-for="UserRequestedDigitalPass" type="radio" value="false" aria-description="@ViewBag.Title">
+                            <label class="nhsuk-label nhsuk-radios__label" for="DigitalUpliftNotRequested">
+                                @Localizer["no"]
+                                <div class="nhsuk-hint">
+                                    <p>@Localizer["hintNo"]</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <details class="nhsuk-details nhsuk-hint" id="eligibilityCriteriaExpander">
+                        <summary class="nhsuk-details__summary">
+                            <span class="nhsuk-details__summary-text">
+                                @Localizer["eligibleTitle"]
+                            </span>
+                        </summary>
+                        <div class="nhsuk-details__text">
+                            <p>@Localizer["eligibleParagraph"]</p>
+                            <ul class="nhsuk-list nhsuk-list--bullet">
+                                <li>@Localizer["1.1_eligibleItem"]</li>
+                                <li>@Localizer["1.2_eligibleItem"]</li>
+                                <li>@Localizer["1.3_eligibleItem"]</li>
+                                <li>@Localizer["1.4_eligibleItem"]</li>
+                            </ul>
+                        </div>
+                    </details>
+                </fieldset>
+            </nhs-form-group>
+            
+            <button id="continueButton" class="nhsuk-button" type="submit" aria-label="@Localizer["continueToNextPage"]">
+                @Localizer["continue"]
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script nonce="@Context.Items["nonce"]">
+        document.addEventListener("DOMContentLoaded", function() {
+
+            var continueButton = document.getElementById("continueButton");
+            continueButton.setAttribute("aria-label", "@yesToUpliftRadioButtonLabel");
+
+            /* expands the eligibility criteria dropdown when the user selects the 'no' radio button */
+            document.querySelector("#DigitalUpliftNotRequested").addEventListener("click", function(e) {
+                var eligibilityCriteriaExpander = document.getElementById("eligibilityCriteriaExpander");
+                eligibilityCriteriaExpander.open = true;
+            });
+
+            /* event listeners to set the aria-label of the continue button dynamically */
+            document.querySelector("#DigitalUpliftRequested").addEventListener("change", function(e) {
+                var conditionalGroup = document.querySelector("#conditonalRadioGroup");
+                if (conditionalGroup) {
+                    document.querySelector("#conditonalRadioGroup").classList.remove("nhsuk-radios__conditional--hidden");
+                }
+                var continueButton = document.getElementById("continueButton");
+                var mobileChoice = document.querySelector("#mobileChoiceRadio");
+                if (mobileChoice) {
+                    if (mobileChoice.checked) {
+                        continueButton.setAttribute("aria-label", "@Localizer["continueToVerifyMobileLabel"]");
+                    } else {
+                        continueButton.setAttribute("aria-label", "@Localizer["continueToVerifyEmailLabel"]");
+                    }
+                }
+                else {
+                    continueButton.setAttribute("aria-label", "@yesToUpliftRadioButtonLabel");
+                }
+            });
+
+            document.querySelector("#DigitalUpliftNotRequested").addEventListener("change", function(e) {
+                var conditionalGroup = document.querySelector("#conditonalRadioGroup");
+                if (conditionalGroup) { 
+                    conditionalGroup.classList.add("nhsuk-radios__conditional--hidden");
+                } 
+                var continueButton = document.getElementById("continueButton");    
+                continueButton.setAttribute("aria-label", "@Localizer["continueToEligibilityLabel"]");
+            });
+
+            document.querySelector("#mobileChoiceRadio").addEventListener("change", function(e) {
+                var continueButton = document.getElementById("continueButton");    
+                continueButton.setAttribute("aria-label", "@Localizer["continueToVerifyMobileLabel"]");
+            });
+
+            document.querySelector("#emailChoiceRadio").addEventListener("change", function(e) {
+                var continueButton = document.getElementById("continueButton");    
+                continueButton.setAttribute("aria-label", "@Localizer["continueToVerifyEmailLabel"]");
+            });
+        });
+    </script>
+}

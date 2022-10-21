@@ -1,0 +1,62 @@
+﻿@model SubmittedModel
+@using Microsoft.Extensions.Options
+@using CovidLetter.Frontend.WebApp.Configuration
+@inject IOptions<SiteConfiguration> SiteConfiguration
+@inject IViewLocalizer Localizer
+
+@{
+    ViewBag.Title = Localizer["title"];
+    var startPage = SiteConfiguration.Value.StartPage;
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <div class="nhsuk-form-group">
+            <div class="application-complete-banner">
+                <div class="body-text">
+                    <h1>@Localizer["title"]</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="nhsuk-form-group">
+            <p class="nhsuk-body">
+                @Localizer["secondaryBody"]
+            </p>
+            <h2 class="nhsuk-heading-m">
+                @Localizer["recordFound1"]
+            </h2 >
+            <p class="nhsuk-body">
+                @Localizer["recordFound2"]
+            </p>
+             <h2 class="nhsuk-heading-m">
+                @Localizer["noRecordFound1"]
+            </h2>
+            <p class="nhsuk-body">
+                @Localizer["noRecordFound2"]
+            </p>
+            <p class="nhsuk-body">
+                @Localizer["notReceived"]
+            </p>
+        </div>
+        <partial name="_SurveyBanner"/>
+    </div>
+</div>
+@section Scripts {
+        <script nonce="@Context.Items["nonce"]">
+            document.addEventListener("DOMContentLoaded", function() {
+                document.querySelector("#survey-yes-button").addEventListener("click", function(e) {
+                    var surveyBanner = document.getElementById("survey-banner");
+                    var surveyUrl = @Model.Is16OrOver.ToString().ToLower() ? '@Localizer["surveyUrlOver16"]' : '@Localizer["surveyUrlUnder16"]';
+                    
+                    surveyBanner.classList.add("nhsuk-element-hidden");
+                    window.open(surveyUrl, '_blank');
+                });
+
+                document.querySelector("#survey-no-button").addEventListener("click", function(e) {
+                    var surveyBanner = document.getElementById("survey-banner");
+                    surveyBanner.classList.add("nhsuk-element-hidden");
+                });
+            });
+        </script>
+    }

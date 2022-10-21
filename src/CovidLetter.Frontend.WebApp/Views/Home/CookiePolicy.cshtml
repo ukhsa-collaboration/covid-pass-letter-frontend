@@ -1,0 +1,74 @@
+﻿@inject IViewLocalizer Localizer;
+@{
+    ViewBag.Title = Localizer["title"];
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <h1 id="page-title">
+            @ViewBag.Title
+        </h1>
+
+        <h2>@Localizer["whatTitle"]</h2>
+        <p>@Localizer["whatHint1"]</p>
+        <p>@Localizer["whatHint2"]</p>
+        <h2>@Localizer["howTitle"]</h2>
+        <p>@Localizer["howHint"]</p>
+
+        <ul>
+            <li>@Localizer["howItem1"]</li>
+        </ul>
+
+        <h2>@Localizer["cookiesTitle"]</h2>
+        <p>@Localizer["cookiesHint"]</p>
+
+        <details class="nhsuk-details">
+            <summary class="nhsuk-details__summary">
+                <span class="nhsuk-details__summary-text">
+                    @Localizer["listCookies"]
+                </span>
+            </summary>
+            <div class="nhsuk-details__text">
+                <div class="nhsuk-table-responsive nhsuk-table-responsive--cookies">
+                    <table class="nhsuk-table">
+                        <caption class="nhsuk-table__caption nhsuk-u-visually-hidden">@Localizer["listCaption"]</caption>
+                        <thead class="nhsuk-table__head">
+                            <tr class="nhsuk-table__row" role="row">
+                                <th class="nhsuk-table__header" role="columnheader" scope="col">@Localizer["headerCookieName"]</th>
+                                <th class="nhsuk-table__header" role="columnheader" scope="col">@Localizer["headerPurpose"]</th>
+                                <th class="nhsuk-table__header" role="columnheader" scope="col">@Localizer["headerExpiry"]</th>
+                            </tr>
+                        </thead>
+                        <tbody class="nhsuk-table__body">
+                            <tr class="nhsuk-table__row" role="row">
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Cookie name">.AspNetCore.Antiforgery</td>
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Purpose">@Localizer["antiforgeryPurpose"]</td>
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Expiry">@Localizer["antiforgeryExpiry"]</td>
+                            </tr>
+                            <tr class="nhsuk-table__row" role="row">
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Cookie name">.AspNetCore.Culture</td>
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Purpose">@Localizer["culturePurpose"]</td>
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Expiry">@Localizer["cultureExpiry"]</td>
+                            </tr>
+                            <tr class="nhsuk-table__row" role="row">
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Cookie name">.AspNetCore.Mvc.CookieTempDataProvider</td>
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Purpose">@Localizer["tempDataPurpose"]</td>
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Expiry">@Localizer["tempDataExpiry"]</td>
+                            </tr>
+                            <tr class="nhsuk-table__row" role="row">
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Cookie name">nhsuk-cookie-consent</td>
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Purpose">@Localizer["consentPurpose"]</td>
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Expiry">@Localizer["consentExpiry"]</td>
+                            </tr>
+                            <tr class="nhsuk-table__row" role="row">
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Cookie name">.NHS.VaccineCertification.Cookie</td>
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Purpose">@Localizer["timeoutPurpose"]</td>
+                                <td class="nhsuk-table__cell" role="gridcell" data-label="Expiry">@Localizer["timeoutExpiry"]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </details>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+dialog {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: -moz-fit-content;
+    width: -webkit-fit-content;
+    width: fit-content;
+    height: -moz-fit-content;
+    height: -webkit-fit-content;
+    height: fit-content;
+    margin: auto;
+    border: solid;
+    padding: 1em;
+    background: #fff;
+    color: #000;
+    display: block
+}
+
+dialog:not([open]) {
+    display: none
+}
+
+dialog + .backdrop {
+    background: rgba(0,0,0,.1)
+}
+
+._dialog_overlay, dialog + .backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0
+}
+
+dialog.fixed {
+    position: fixed;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%)
+}
+
+.nhsuk-timeout-warning {
+    display: none;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px
+}
+
+@media (min-width:40.0625em) {
+    .nhsuk-timeout-warning {
+        padding: 30px
+    }
+}
+
+.nhsuk-timeout-warning .nhsuk-button {
+    margin: 0 10px 15px 0
+}
+
+@media (min-width:40.0625em) {
+    .nhsuk-timeout-warning .nhsuk-button {
+        margin-bottom: 0
+    }
+}
+
+.nhsuk-timeout-warning[open] {
+    display: block
+}
+
+.nhsuk-timeout-warning[open] + .backdrop {
+    background: rgba(0,0,0,.8)
+}
+
+.nhsuk-timeout-warning[open]::-webkit-backdrop {
+    background: rgba(0,0,0,.8)
+}
+
+.nhsuk-timeout-warning[open]::backdrop {
+    background: rgba(0,0,0,.8)
+}
+
+.nhsuk-timeout-warning-overlay {
+    overflow: hidden
+}
+
+.js-enabled #nhsuk-timeout-warning-fallback-wrapper {
+    display: none
+}
+
+@keyframes loadTimeoutWarningIfJsDisabled {
+    100% {
+        opacity: 1;
+        max-height: 300px;
+        visibility: visible;
+    }
+}

@@ -1,0 +1,49 @@
+﻿@inject IViewLocalizer Localizer
+@model InputEmailViewModel
+
+@{
+    ViewBag.Title = Localizer["title"];
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form asp-action="EmailOtpInput" method="post">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary"/>
+            }
+
+            <nhs-form-group>
+                <fieldset class="nhsuk-fieldset">
+                    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                        <h1 class="nhsuk-fieldset__heading" id="page-title">
+                            @ViewBag.Title
+                        </h1>
+                    </legend>
+
+                    <div class="nhsuk-hint" id="email-hint">
+                        <p>@Localizer["hint1"]</p>
+                    </div>
+
+                    <nhs-form-group>
+                        <span nhs-validation-for="EmailAddress"></span>
+                    </nhs-form-group>
+
+                    <nhs-form-group>
+                        <label class="nhsuk-label" for="EmailAddress">@Localizer["emailLabel"]</label>
+                        <input class="nhsuk-input nhsuk-input--width-20" error-class-toggle="nhsuk-input--error" id="EmailAddress" asp-for="EmailAddress" type="text" aria-description="@ViewBag.Title" aria-required="true">
+                    </nhs-form-group>
+
+                    <nhs-form-group>
+                        <label class="nhsuk-label" for="EmailAddressConfirm">@Localizer["emailConfirmationLabel"]</label>
+                        <input class="nhsuk-input nhsuk-input--width-20" error-class-toggle="nhsuk-input--error" id="EmailAddressConfirm" asp-for="EmailAddressConfirm" type="text" aria-description="@ViewBag.Title" aria-required="true">
+                    </nhs-form-group>
+                </fieldset>
+            </nhs-form-group>
+
+            <button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["continue"]
+            </button>
+         </form>
+    </div>
+</div>

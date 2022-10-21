@@ -1,0 +1,17 @@
+﻿@using Microsoft.Extensions.Options
+@using CovidLetter.Frontend.WebApp.Configuration
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IOptions<SiteConfiguration> SiteConfiguration
+@inject IViewLocalizer Localizer
+
+@{
+    var startPage = SiteConfiguration.Value.StartPage;
+
+    Layout = "_Layout";
+    ViewBag.LogoHref = startPage;
+    ViewBag.ServiceHomeHref = startPage;
+    ViewBag.ServiceName = Localizer["serviceName"];
+    ViewBag.MetaDataOgUrl = "https://nhs.uk/";
+    ViewBag.MetaDataOgTitle = Localizer["title"];
+    ViewBag.MetaDataDescription = Localizer["description"];
+}

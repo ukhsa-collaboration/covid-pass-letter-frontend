@@ -1,0 +1,7 @@
+﻿<environment include="Development">
+    <script src="~/lib/nhsuk-frontend-extensions/javascripts/nhsuk-frontend-extensions.js" defer="defer" asp-append-version="true" nonce="@Context.Items["nonce"]"></script>
+</environment>
+
+<environment exclude="Development">
+    <script src="~/lib/nhsuk-frontend-extensions/javascripts/nhsuk-frontend-extensions.min.js" defer="defer" asp-append-version="true" nonce="@Context.Items["nonce"]"></script>
+</environment>

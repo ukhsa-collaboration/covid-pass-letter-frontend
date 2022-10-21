@@ -1,0 +1,41 @@
+/* ==========================================================================
+   COMPONENTS / #LOADER
+   ========================================================================== */
+.nhsuk-loader {
+    margin-bottom: 16px;
+    margin-top: 16px;
+    position: relative;
+    text-align: center;
+}
+
+@media (min-width: 40.0625em) {
+    .nhsuk-loader {
+        margin-bottom: 24px;
+    }
+}
+
+@media (min-width: 40.0625em) {
+    .nhsuk-loader {
+        margin-top: 24px;
+    }
+}
+
+.nhsuk-loader__spinner {
+    animation: spin 2s linear infinite;
+    border: 16px solid #d1dee1;
+    border-radius: 50%;
+    border-top: 16px solid #2676c3;
+    display: inline-block;
+    height: 120px;
+    margin: auto;
+    width: 120px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

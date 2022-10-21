@@ -1,0 +1,116 @@
+﻿@using CovidLetter.Frontend.WebApp.Constants
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using CovidLetter.Frontend.WebApp.Services
+@using Microsoft.Extensions.Localization
+@model CheckAnswersViewModel
+@inject IViewLocalizer Localizer
+@inject IStringLocalizer<Languages> LanguagesLocalizer
+@inject IStringLocalizer<Accessibility> AccessibilityLocalizer
+
+@{
+    ViewBag.Title = Localizer["title"];
+    var backButtonModel = ViewServices.GenerateBackButtonModelUsingControllerAndAction(@Model.BackLink, @UIConstants.Home.HomeController);
+}
+
+@section BackLink
+{
+    <div id="check-answers-back-button">
+        <partial name="_BackButton" model="backButtonModel"/>
+    </div>
+}
+
+<div class="nhsuk-grid-row" id="check-answers-page-content">
+    <div class="nhsuk-grid-column-two-thirds">
+        <h1 class="nhsuk-heading-l" id="page-title">
+            @ViewBag.Title
+        </h1>
+        
+        <div class="nhsuk-table-responsive">
+            <table class="nhsuk-table nhsuk-check-answers-table">
+                <tbody class="nhsuk-table__body">
+                    @if (!string.IsNullOrEmpty(Model.NhsNumber))
+                    {
+                        <tr class="nhsuk-table__row" role="row">
+                            <td class="nhsuk-table__cell nhsuk-check-answers-first-column-width" role="gridcell" data-label="Key"><strong>@Localizer["answerNHSNumber"]</strong></td>
+                            <td class="nhsuk-table__cell" role="gridcell" data-label="Value">@Model.NhsNumber</td>
+                            <td class="nhsuk-table__cell nhsuk-check-answers-text-right" role="gridcell" data-label="Actions">
+                                <a asp-action="NhsNumber" aria-label="@Localizer["change"] @Localizer["answerNHSNumber"]">@Localizer["change"]</a>
+                            </td>
+                        </tr>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Name) && !Model.KnowsNhsNumber)
+                    {
+                        <tr class="nhsuk-table__row" role="row">
+                            <td class="nhsuk-table__cell nhsuk-check-answers-first-column-width" role="gridcell" data-label="Key"><strong>@Localizer["answerName"]</strong></td>
+                            <td class="nhsuk-table__cell" role="gridcell" data-label="Value">@Model.Name</td>
+                            <td class="nhsuk-table__cell nhsuk-check-answers-text-right" role="gridcell" data-label="Actions">
+                                <a asp-action="Name" aria-label="@Localizer["change"] @Localizer["answerName"]">@Localizer["change"]</a>
+                            </td>
+                        </tr>
+                    }
+                    <tr class="nhsuk-table__row" role="row">
+                        <td class="nhsuk-table__cell nhsuk-check-answers-first-column-width" role="gridcell" data-label="Key"><strong>@Localizer["answerDateOfBirth"]</strong></td>
+                        <td class="nhsuk-table__cell" role="gridcell" data-label="Value">@Model.DateOfBirth</td>
+                        <td class="nhsuk-table__cell nhsuk-check-answers-text-right" role="gridcell" data-label="Actions">
+                            <a asp-action="DateOfBirth" aria-label="@Localizer["change"] @Localizer["answerDateOfBirth"]">@Localizer["change"]</a>
+                        </td>
+                    </tr>
+                    <tr class="nhsuk-table__row" role="row">
+                        <td class="nhsuk-table__cell nhsuk-check-answers-first-column-width" role="gridcell" data-label="Key"><strong>@Localizer["answerPostcode"]</strong></td>
+                        <td class="nhsuk-table__cell" role="gridcell" data-label="Value">@Model.Postcode</td>
+                        <td class="nhsuk-table__cell nhsuk-check-answers-text-right" role="gridcell" data-label="Actions">
+                            <a asp-action="Postcode" aria-label="@Localizer["change"] @Localizer["answerPostcode"]">@Localizer["change"]</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <details class="nhsuk-details">
+            <summary class="nhsuk-details__summary">
+                <span class="nhsuk-details__summary-text">
+                    @Localizer["detailsTitle"]
+                </span>
+            </summary>
+            <div class="nhsuk-details__text">
+                <p>@Localizer["detailsParagraph"]</p>
+            </div>
+        </details>
+
+        <h2 class="nhsuk-heading-m">@Localizer["summaryHeading"]</h2>
+        <p>@Localizer["summaryParagraph"]</p>
+
+        <form asp-action="CheckAnswers" method="post" id="check-answers-form">
+            <button class="nhsuk-button" data-module="nhsuk-button" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["accept"]
+            </button>
+        </form>
+    </div>
+</div>
+
+<div id="load-spinner-wrapper" class="nhsuk-element-hidden nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+        <div class="nhsuk-loader">
+            <span class="nhsuk-loader__spinner"></span>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script nonce="@Context.Items["nonce"]">
+        document.addEventListener("DOMContentLoaded", function () {
+            /* when form is submitted, show the loading spinner */
+            document.querySelector("#check-answers-form").addEventListener("submit", function(e){
+                var backButton = document.getElementById("check-answers-back-button");
+                var pageContent = document.getElementById("check-answers-page-content");
+                var loadingSpinner = document.getElementById("load-spinner-wrapper");
+                
+                backButton.classList.add("nhsuk-element-hidden");
+                pageContent.classList.add("nhsuk-element-hidden");
+                loadingSpinner.classList.remove("nhsuk-element-hidden");
+
+                document.title = "@Localizer["searchInProgress"]";
+            });
+        });
+    </script>
+}

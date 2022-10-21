@@ -1,0 +1,21 @@
+﻿@inject IViewLocalizer Localizer
+
+<div id="survey-banner" class="survey-banner">
+    <div class="nhsuk-grid-column-one-half nhsuk-u-margin-top-3 nhsuk-u-margin-bottom-3">
+        <h4 class="nhsuk-heading-xs">
+            @Localizer["surveyBannerHeader"]
+        </h4>
+        <p class="nhsuk-body">
+            @Localizer["surveyBannerSubheader"]
+        </p>
+    </div>
+    <div class="nhsuk-grid-column-one-half nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-4">
+        <button id="survey-yes-button" class="nhsuk-button nhsuk-button--reverse survey-button nhsuk-u-margin-top-4" aria-description="@Localizer["yesButtonLabel"]">
+            @Localizer["surveyBannerYesText"]
+        </button>
+        <button id="survey-no-button" class="nhsuk-button nhsuk-button--reverse survey-button nhsuk-u-margin-top-4 nhsuk-u-margin-left-2" aria-description="@Localizer["noButtonLabel"]">
+            @Localizer["surveyBannerNoText"]
+        </button>
+    </div>
+</div>
+

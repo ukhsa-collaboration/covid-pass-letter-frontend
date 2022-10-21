@@ -1,0 +1,13 @@
+﻿td[data-label="Cookie name"] {
+    word-break: break-all;
+}
+
+@media (max-width: 48.0525em) {
+    .nhsuk-table-responsive--cookies td::before {
+        content: attr(data-label);
+        display: block;
+        font-weight: bold;
+        padding-right: 20px;
+        word-break: normal;
+    }
+}

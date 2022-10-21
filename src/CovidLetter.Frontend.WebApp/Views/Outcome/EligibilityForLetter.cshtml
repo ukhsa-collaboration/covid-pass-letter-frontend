@@ -1,0 +1,100 @@
+﻿@model EligibilityForLetterViewModel
+@using CovidLetter.Frontend.WebApp.Constants
+@using CovidLetter.Frontend.WebApp.Services
+@inject IViewLocalizer Localizer
+
+@{
+    ViewBag.Title = Localizer["title"];
+
+    var backButtonController = ViewBag.userEligibleForImmediatePass ? UIConstants.Outcome.OutcomeController : UIConstants.Home.HomeController;
+    var backButtonAction = ViewBag.userEligibleForImmediatePass ? "ImmediatePass" : "CheckAnswers";
+    var backButtonModel = ViewServices.GenerateBackButtonModelUsingControllerAndAction(backButtonAction, backButtonController);
+
+    List<LetterType> letterTypes = new List<LetterType>()
+    {
+        new LetterType{ Key = "Audio", Type = LetterTypes.Audio, LocalizerTextKey = "radioButtonAudioText", LocalizerHintTextKey = "" },
+        new LetterType{ Key = "Braille", Type = LetterTypes.Braille, LocalizerTextKey = "radioButtonBrailleText", LocalizerHintTextKey = "" },
+        new LetterType{ Key = "BigPrint", Type = LetterTypes.BigPrint, LocalizerTextKey = "radioButtonBigPrintText", LocalizerHintTextKey = "" },
+        new LetterType{ Key = "AnotherLanguage", Type = LetterTypes.AnotherLanguage, LocalizerTextKey = "radioButtonLanguageText", LocalizerHintTextKey = "radioButtonLanguageHintText" },
+        new LetterType{ Key = "None", Type = LetterTypes.None, LocalizerTextKey = "radioButtonNoneText", LocalizerHintTextKey = "" }
+    };
+}
+
+@section BackLink
+{
+    <partial name="_BackButton" model="backButtonModel"/>
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form asp-action="EligibilityForLetter" method="post">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary" />
+            }
+
+            <nhs-form-group>
+                <fieldset class="nhsuk-fieldset">
+                    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                        <h1 class="nhsuk-fieldset__heading">
+                            @ViewBag.Title
+                        </h1>
+                    </legend>
+
+                    <div class="nhsuk-hint" id="user-eligibility-for-covid-letter-hint">
+                        <p>@Localizer["infoParagraph1"]</p>
+                    </div>
+
+                    <div class="nhsuk-hint">
+                        <p>@Localizer["infoParagraph2", "https://www.gov.uk/government/publications/what-your-nhs-covid-pass-letter-tells-you", @Localizer["externalLinkNewTab"], @Localizer["infoParagraph2LinkText"]]</p>
+                    </div>
+    
+                    <span nhs-validation-for="RequestedLetterType"></span>
+
+                    <div class="nhsuk-radios">
+                        @foreach (var letterType in letterTypes)
+                        {
+                            <div class="nhsuk-radios__item">
+                                <input class="nhsuk-radios__input" id="@letterType.Key" asp-for="RequestedLetterType" type="radio" value="@letterType.Type">
+                                <label class="nhsuk-label nhsuk-radios__label" for="@letterType.Key">
+                                    @Localizer[@letterType.LocalizerTextKey]
+                                    
+                                    @if (letterType.LocalizerHintTextKey != "")
+                                    {
+                                        <div class="nhsuk-hint no-margin-bottom">
+                                            <p class="no-margin-bottom">@Localizer[@letterType.LocalizerHintTextKey]</p>
+                                        </div>    
+                                    }
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </fieldset>
+            </nhs-form-group>
+            
+            <button id="continueButton" class="nhsuk-button" type="submit" aria-label="@Localizer["continueToNextPageLabel"]">
+                @Localizer["continueButton"]
+            </button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script nonce="@Context.Items["nonce"]">
+        document.addEventListener("DOMContentLoaded", function() {
+            /* iterates over all radio buttons and adds an event listener to each to set the aria-label of the continue button dynamically */
+            document.querySelectorAll('input[type="radio"]').forEach(radioButton => {
+                radioButton.addEventListener("change", function(changeEvent) {
+                    var continueButton = document.getElementById("continueButton");
+                    var clickedRadioButtonId = changeEvent.target.id;
+
+                    if (clickedRadioButtonId == "AnotherLanguage") {
+                        continueButton.setAttribute("aria-label", "@Localizer["continueToLanguagesLabel"]");
+                    } else {
+                        continueButton.setAttribute("aria-label", "@Localizer["ContinueToFailurePreferenceLabel"]");
+                    }
+                });
+            });
+        });
+    </script>
+}

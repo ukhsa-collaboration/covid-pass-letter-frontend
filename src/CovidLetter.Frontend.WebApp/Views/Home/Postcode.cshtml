@@ -1,0 +1,53 @@
+﻿@using CovidLetter.Frontend.WebApp.Services
+@inject IViewLocalizer Localizer
+@model PostcodeViewModel
+
+@{
+    ViewBag.Title = Localizer["title"];
+    var backButtonModel = ViewServices.GenerateBackButtonModelUsingHref(@ViewBag.BackLink);
+}
+
+@section BackLink
+{
+    <partial name="_BackButton" model="backButtonModel"/>
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form asp-action="Postcode" method="post">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary"/>
+            }
+
+            <nhs-form-group>
+                <fieldset class="nhsuk-fieldset">
+                    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                        <h1 class="nhsuk-fieldset__heading" id="page-title">
+                            @ViewBag.Title
+                        </h1>
+                    </legend>
+                    
+                    <div class="nhsuk-hint" id="postcode-hint">
+                        <p>@Localizer["hint1"]</p>
+                        <p>@Localizer["hint2"]</p>
+                    </div>
+
+                    <nhs-form-group>
+                        <label class="nhsuk-label" for="Postcode">
+                            @Localizer["postcodeLabel"]
+                        </label>
+                        <span nhs-validation-for="Postcode"></span>
+                        <input class="nhsuk-input nhsuk-input--width-10" error-class-toggle="nhsuk-input--error" id="Postcode" asp-for="Postcode" type="text" aria-description="@ViewBag.Title" aria-required="true">
+                    </nhs-form-group>
+                </fieldset>
+            </nhs-form-group>
+        
+            <partial name="_RequestingForSomeoneElse"/>
+
+            <button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["continue"]
+            </button>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+﻿@inject IViewLocalizer Localizer
+@model VerifyEmailViewModel
+
+@{
+    ViewBag.Title = Localizer["title"];
+    ViewBag.ServiceName = Localizer["serviceName"];
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form asp-action="VerifyEmail" method="post">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary"/>
+            }
+
+            <nhs-form-group>
+                <fieldset class="nhsuk-fieldset">
+                    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                        <h1 class="nhsuk-fieldset__heading" id="page-title">
+                            @ViewBag.Title
+                        </h1>
+                    </legend>
+
+                    <div class="nhsuk-hint" id="email-hint">
+                        <p>@Localizer["hint1"]</p>
+                    </div>
+
+                    <nhs-form-group>
+                        <span nhs-validation-for="EmailAddress"></span>
+                    </nhs-form-group>
+
+                    <nhs-form-group>
+                        <label class="nhsuk-label" for="EmailAddress">
+                            @Localizer["emailLabel"]
+                        </label>
+                        <input class="nhsuk-input nhsuk-input--width-20" error-class-toggle="nhsuk-input--error" id="EmailAddress" asp-for="EmailAddress" type="text" aria-description="@ViewBag.Title" aria-required="true">
+                    </nhs-form-group>
+
+                    <nhs-form-group>
+                        <label class="nhsuk-label" for="EmailAddressConfirmation">
+                            @Localizer["emailConfirmationLabel"]
+                        </label>
+                        <input class="nhsuk-input nhsuk-input--width-20" error-class-toggle="nhsuk-input--error" id="EmailAddressConfirmation" asp-for="EmailAddressConfirmation" type="text" aria-description="@ViewBag.Title" aria-required="true">
+                    </nhs-form-group>
+                </fieldset>
+            </nhs-form-group>
+
+            <partial name="_RequestingForSomeoneElse"/>
+
+            @if (Model.RemainingEmailAttempts < ViewBag.defaultAttempts)
+            {
+                <div>
+			        <ul class="nhsuk-list nhsuk-list--tick">
+				        <li>
+					        <partial name="_ExclamationMarkCircle"/>
+					        <strong>@Localizer["emailFailureWarning1", @Model.RemainingEmailAttempts != null ? @Model.RemainingEmailAttempts : @ViewBag.defaultAttempts, @Model.RemainingEmailAttempts > 1 ? "s" : ""]</strong>
+                            <br />
+                            <strong>@Localizer["emailFailureWarning2"]</strong>
+				        </li>
+			        </ul>
+		        </div>
+            }
+
+            <button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["continue"]
+            </button>
+        </form>
+    </div>
+</div>

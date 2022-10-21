@@ -1,0 +1,277 @@
+﻿@model RequestLetterForTravelModel
+@using Microsoft.Extensions.Options
+@using CovidLetter.Frontend.WebApp.Configuration
+@inject IOptions<SiteConfiguration> SiteConfiguration
+@inject IViewLocalizer Localizer;
+
+@{
+	ViewBag.Title = Localizer["1_title"];
+}
+
+<div class="nhsuk-grid-row">
+	@if (Model!.IsServiceBusy)
+	{
+		@* Display 'Service Busy' message *@
+		<div class="nhsuk-warning-callout">
+			<h3 class="nhsuk-warning-callout__label" id="nhsuk-notification-banner-title">
+				<span role="alert">
+					<span class="nhsuk-u-visually-hidden">@Localizer["serviceBusyPrefix"]</span>
+					@Localizer["serviceBusyTitle"]
+				</span>
+			</h3>
+			<p class="nhsuk-body">@Localizer["serviceBusyHint"]</p>
+		</div>
+	}
+
+	<div class="nhsuk-grid-column-two-thirds">
+		<fieldset class="nhsuk-fieldset">
+			<legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+				<h1 class="nhsuk-fieldset__heading" id="page-title">
+					@ViewBag.Title
+				</h1>
+			</legend>
+
+			<br />
+
+			<div class="nhsuk-hint" id="request-hint">
+				<p class="nhsuk-body">
+					@Localizer["2_introParagraph1", "https://www.nhs.uk/nhs-services/online-services/find-nhs-number", @Localizer["externalLinkNewTab"], @Localizer["2_introLink1LinkText"]]
+				</p>
+				<p class="nhsuk-body">
+					@Localizer["3_introParagraph2", "https://www.gov.uk/foreign-travel-advice", @Localizer["externalLinkNewTab"], @Localizer["3_introLink2LinkText"]]
+				</p>
+			</div>
+		</fieldset>
+
+		<div class="nhsuk-do-dont-list">
+			<h3 class="nhsuk-do-dont-list__label">@Localizer["4.1_whoIsEligibleBoxTitle"]</h3>
+
+			<p class="nhsuk-body">
+				@Localizer["4.2_whoIsEligibleBoxHint1"]
+			</p>
+
+			<ul class="nhsuk-list nhsuk-list--bullet">
+				<li>@Localizer["4.3_whoIsEligibleBoxListItem1"]</li>
+				<li>@Localizer["4.3_whoIsEligibleBoxListItem2", "https://www.gov.uk/government/publications/what-your-nhs-covid-pass-letter-tells-you", @Localizer["externalLinkNewTab"], @Localizer["4.3_whoIsEligibleBoxListItem2LinkText"]]</li>
+				<li>@Localizer["4.3_whoIsEligibleBoxListItem3"]</li>
+				<li>@Localizer["4.3_whoIsEligibleBoxListItem4"]</li>
+			</ul>
+
+			<p class="nhsuk-body">
+				@Localizer["4.4_whoIsEligibleBoxHint2", "https://covid-status-letter.service.nhsx.nhs.uk/who-are-you-requesting-for?service=digital", @Localizer["externalLinkNewTab"], @Localizer["4.4_whoIsEligibleBoxHint2LinkTitle"]]
+				@Localizer["4.4_whoIsEligibleBoxHint2.1", "https://www.nhs.uk/nhs-services/online-services/nhs-login", @Localizer["externalLinkNewTab"], @Localizer["4.4_whoIsEligibleBoxHint2.1LinkTitle"]]
+			</p>
+
+			<div class="nhsuk-u-margin-bottom-4">
+				<a class="nhsuk-action-link__link" href="https://covid-status.service.nhsx.nhs.uk/" target="_blank" rel="noopener noreferrer" aria-description="@Localizer["externalLinkNewTab"]">
+					<svg class="nhsuk-icon nhsuk-icon__arrow-right-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" height="36" width="36">
+						<path d="M0 0h24v24H0z" fill="none"></path>
+						<path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a1 1 0 0 1 1.41-1.41l5.66 5.65a1 1 0 0 1 0 1.42l-5.66 5.65a1 1 0 0 1-1.41 0 1 1 0 0 1 0-1.41L13.69 13H2.05A10 10 0 1 0 12 2z"></path>
+					</svg>
+					<span class="nhsuk-action-link__text">@Localizer["4.5_whoIsEligibleBoxHint3"]</span>
+				</a>
+			</div>
+
+			<p class="nhsuk-body">
+				@Localizer["4.6_whoIsEligibleBoxHint4"]
+			</p>
+
+			<span class="nhsuk-store-badge-nhs-app-top-container">
+				<a class="nhsuk-store-badge-nhs-app-container small-margin-right" target="_blank" rel="noopener noreferrer" href="https://itunes.apple.com/us/app/nhs-app/id1388411277?ls=1&amp;mt=8" aria-description="@Localizer["externalLinkNewTab"]">
+					<img class="nhsuk-store-badge-nhs-app" alt="Download the NHS App on the App store" src="~/../Images/_AppleStoreBadge.png">
+				</a>
+				<a class="nhsuk-store-badge-nhs-app-container" target="_blank" rel="noopener noreferrer" href="https://play.google.com/store/apps/details?id=com.nhs.online.nhsonline" aria-description="@Localizer["externalLinkNewTab"]">
+					<img class="nhsuk-store-badge-nhs-app" alt="Download the NHS App on Google Play" src="~/../Images/_GooglePlayStoreBadge.png">
+				</a>
+			</span>
+
+			<p class="nhsuk-body">
+				@Localizer["4.7_whoIsEligibleBoxHint5"]
+				<ul class="nhsuk-list nhsuk-list--bullet">
+					<li>
+						<a href="https://covid19.gov.im/vaccination/nhs-covid-pass-for-isle-of-man-residents/" target="_blank" rel="noopener noreferrer" aria-description="@Localizer["externalLinkNewTab"]"> @Localizer["4.7_whoIsEligibleBoxLink1"]</a>
+					</li>
+					<li>
+						<a href="https://gov.wales/get-your-nhs-covid-pass" target="_blank" rel="noopener noreferrer" aria-description="@Localizer["externalLinkNewTab"]"> @Localizer["4.7_whoIsEligibleBoxLink2"]</a>
+					</li>
+				</ul>
+			</p>
+		</div>
+
+		<details class="nhsuk-details nhsuk-expander">
+			<summary class="nhsuk-details__summary">
+				<span class="nhsuk-details__summary-text">
+					@Localizer["5.1_whatDoINeedHeader"]
+				</span>
+			</summary>
+
+			<div class="nhsuk-details__text">
+				<p class="nhsuk-body">
+					@Localizer["5.2_whatDoINeedHint1"]
+				</p>
+				<ul class="nhsuk-list nhsuk-list--tick">
+					<li>
+						<partial name="_Tick" />
+						@Localizer["5.2_whatDoINeedHint1ListItem1"]
+					</li>
+					<li>
+						<partial name="_Tick" />
+						@Localizer["5.2_whatDoINeedHint1ListItem2"]
+					</li>
+				</ul>
+			</div>
+
+			<div class="nhsuk-details__text">
+				<p class="nhsuk-body">
+					@Localizer["5.3_whatDoINeedHint1"]
+				</p>
+			</div>
+
+			<div class="nhsuk-details__text">
+				<p class="nhsuk-body">
+					@Localizer["5.4_whatDoINeedHint1", "https://www.nhs.uk/conditions/coronavirus-covid-19/nhs-covid-pass/who-can-get-an-nhs-covid-pass/who-can-get-an-nhs-covid-pass-for-travel/", @Localizer["externalLinkNewTab"], @Localizer["5.4_whatDoINeedLinkText1"]]
+				</p>
+			</div>
+
+			<div class="nhsuk-details__text">
+				<p class="nhsuk-body">
+					@Localizer["5.5_whatDoINeedHint1"]
+				</p>
+				<ul class="nhsuk-list nhsuk-list--bullet">
+					<li>@Localizer["5.5_whatDoINeedHint2", "https://www.nhs.uk/conditions/coronavirus-covid-19/coronavirus-vaccination/tell-nhs-about-coronavirus-vaccinations-abroad/", @Localizer["externalLinkNewTab"], @Localizer["5.5_whatDoINeedLinkText1"]]</li>
+					<li>@Localizer["5.5_whatDoINeedHint3"]</li>
+				</ul>
+				<p class="nhsuk-body">
+					@Localizer["5.5_whatDoINeedHint4"]
+				</p>
+				<p class="nhsuk-body">
+					@Localizer["5.5_whatDoINeedHint5"]
+				</p>
+			</div>
+
+			<div class="nhsuk-details__text">
+				<p class="nhsuk-body">
+					@Localizer["5.6_whatDoINeedHint2"]
+				</p>
+				<ul class="nhsuk-list nhsuk-list--tick">
+					<li>
+						<partial name="_Tick" />
+						@Localizer["5.6_whatDoINeedHint1ListItem1"]
+					</li>
+				</ul>
+			</div>
+		</details>
+
+		<details class="nhsuk-details nhsuk-expander">
+			<summary class="nhsuk-details__summary">
+				<span class="nhsuk-details__summary-text">
+					@Localizer["6.1_howItWorksHeader"]
+				</span>
+			</summary>
+
+			<div class="nhsuk-details__text">
+				<p class="nhsuk-body">
+					@Localizer["6.2_howItWorksHint1"]
+				</p>
+				<ul class="nhsuk-list nhsuk-list--bullet">
+					<li>@Localizer["6.2_howItWorksHint1ListItem1"]</li>
+					<li>@Localizer["6.2_howItWorksHint1ListItem2"]</li>
+					<li>@Localizer["6.2_howItWorksHint1ListItem3"]</li>
+				</ul>
+			</div>
+
+			<details class="nhsuk-details-custom">
+				<summary class="nhsuk-details-custom__summary">
+					<span class="nhsuk-details-custom__summary-text">@Localizer["6.2.1_howItWorksHint1"]</span>
+				</summary>
+				<div class="nhsuk-details-custom__text">
+					@Localizer["6.2.1_howItWorksHint2"]
+					<br/><br/>
+					@Localizer["6.2.1_howItWorksHint3"]
+					<br/><br/>
+					@Localizer["6.2.1_howItWorksHint4", "https://www.nhs.uk/nhs-services/gps/how-to-register-with-a-gp-surgery/", @Localizer["externalLinkNewTab"], @Localizer["6.2.1_howItWorksHint4Text"]]
+					@Localizer["6.2.1_howItWorksHint5"]
+				</div>
+			</details>
+
+			<div class="nhsuk-inset-text nhsuk-u-margin-left-4 nhsuk-u-margin-bottom-4 nhsuk-u-margin-top-1 nhsuk-u-padding-top-2 nhsuk-u-padding-bottom-2">
+				<p class="nhsuk-hint">@Localizer["6.3_howItWorksHint2"]</p>
+			</div>
+
+			<div class="nhsuk-details__text">
+				<p class="nhsuk-body">
+					@Localizer["6.3.1_howItWorksHint1", "https://covid-status.service.nhsx.nhs.uk/help/TermsAndConditions/", @Localizer["externalLinkNewTab"], @Localizer["6.3.1_howItWorksHint1Text"]]
+					@Localizer["6.3.1_howItWorksHint2", "https://covid-status.service.nhsx.nhs.uk/help/privacy-notice/", @Localizer["externalLinkNewTab"], @Localizer["6.3.1_howItWorksHint2Text"]]
+				</p>
+			</div>
+
+			<div class="nhsuk-details__text">
+				<p class="nhsuk-body">
+					<strong>
+						@Localizer["6.4_howItWorksHint3Header"]
+					</strong>
+				</p>
+
+				<p class="nhsuk-body">
+					@Localizer["6.4_howItWorksHint3Body"]
+				</p>
+
+				<p class="nhsuk-body">
+					@Localizer["6.4.1_howItWorksHint1"]
+				</p>
+
+				<div class="nhsuk-details__text">
+					<ul class="nhsuk-list nhsuk-list--bullet">
+						<li>
+							<a href="https://www.gov.uk/government/publications/what-your-nhs-covid-pass-letter-tells-you-easy-read/" target="_blank" rel="noopener noreferrer" aria-description="@Localizer["externalLinkNewTab"]"> @Localizer["6.4.1_howItWorksLink1"]</a>
+						</li>
+						<li>
+							<a href="https://www.gov.uk/government/publications/what-your-nhs-covid-pass-letter-tells-you" target="_blank" rel="noopener noreferrer" aria-description="@Localizer["externalLinkNewTab"]"> @Localizer["6.4.1_howItWorksLink2"]</a>
+						</li>
+						<li>
+							<a href="https://www.youtube.com/watch?v=tWtB7pkbWOY&skip_registered_account_check=true" target="_blank" rel="noopener noreferrer" aria-description="@Localizer["externalLinkNewTab"]"> @Localizer["6.4.1_howItWorksLink3"]</a>
+						</li>
+					</ul>
+				</div>
+
+				<p class="nhsuk-body">
+					<strong>
+						@Localizer["6.5_howItWorksHint4Header"]
+					</strong>
+				</p>
+
+				<p class="nhsuk-body">
+					@Localizer["6.5_howItWorksHint4Body"]
+				</p>
+			</div>
+		</details>
+
+		<details class="nhsuk-details nhsuk-expander">
+			<summary class="nhsuk-details__summary">
+				<span class="nhsuk-details__summary-text">
+					@Localizer["7.1_letterByPhone"]
+				</span>
+			</summary>
+
+			<div class="nhsuk-details__text">
+				<p class="nhsuk-body">
+					@Localizer["7.2_letterByPhone"]
+				</p>
+				<ul class="nhsuk-list nhsuk-list--bullet">
+					<li>@Localizer["7.2_letterByPhoneListItem1"]</li>
+					<li>@Localizer["7.2_letterByPhoneListItem2"]</li>
+					<li>@Localizer["7.2_letterByPhoneListItem3"]</li>
+				</ul>
+				<p class="nhsuk-body">
+					@Localizer["7.3_letterByPhone"]
+				</p>
+			</div>
+		</details>
+
+		<form asp-action="RequestLetterForTravel" method="post">
+			<button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+				@Localizer["8_continueButton"]
+			</button>
+		</form>
+	</div>
+</div>

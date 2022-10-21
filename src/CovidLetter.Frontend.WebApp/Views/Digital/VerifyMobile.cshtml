@@ -1,0 +1,56 @@
+﻿@inject IViewLocalizer Localizer
+@model VerifyMobileViewModel
+
+@{
+    ViewBag.Title = Localizer["title"];
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form asp-action="VerifyMobile" method="post">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary"/>
+            }
+
+            <nhs-form-group>
+                <h1 class="nhsuk-heading-l" id="page-title">
+                    @ViewBag.Title
+                </h1>
+
+                <div class="nhsuk-hint" id="mobile-hint">
+                    <p>@Localizer["hint1"]</p>
+                </div>
+
+                <nhs-form-group>
+                    <label class="nhsuk-label" for="MobileNumber">@Localizer["mobileLabel"]</label>
+                    <div class="nhsuk-hint" id="mobile-hint-inline">
+                        @Localizer["hint2"]
+                    </div>                
+                    <span nhs-validation-for="MobileNumber"></span>
+                    <input class="nhsuk-input nhsuk-input--width-10" error-class-toggle="nhsuk-input--error" id="MobileNumber" asp-for="MobileNumber" type="text" aria-description="@ViewBag.Title" aria-required="true">
+                </nhs-form-group>
+            </nhs-form-group>
+            
+            <partial name="_RequestingForSomeoneElse"/>
+
+            @if (Model.RemainingMobileAttempts < ViewBag.defaultAttempts)
+            {
+                <div>
+			        <ul class="nhsuk-list nhsuk-list--tick">
+				        <li>
+					        <partial name="_ExclamationMarkCircle"/>
+					        <strong>@Localizer["mobileMatchFailureWarning1", @Model.RemainingMobileAttempts != null ? @Model.RemainingMobileAttempts : @ViewBag.defaultAttempts, @Model.RemainingMobileAttempts > 1 ? "s" : ""]</strong>
+                            <br />
+                            <strong>@Localizer["mobileMatchFailureWarning2"]</strong>
+				        </li>
+			        </ul>
+		        </div>
+            }
+
+            <button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["continue"]
+            </button>
+        </form>
+    </div>
+</div>

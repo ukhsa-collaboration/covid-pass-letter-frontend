@@ -1,0 +1,65 @@
+﻿@using CovidLetter.Frontend.WebApp.Services
+@model EmailOrPhoneNumberChoiceViewModel
+@inject IViewLocalizer Localizer
+
+@{
+    ViewBag.Title = Localizer["title"];
+}
+
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form method="post" asp-action="EmailOrPhoneNumberChoice">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary"/>
+            }
+
+            <nhs-form-group>
+                <fieldset class="nhsuk-fieldset">
+                    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                        <h1 class="nhsuk-fieldset__heading" id="page-title">
+                            @ViewBag.Title
+                        </h1>
+                    </legend>
+
+                    <div class="nhsuk-hint" id="name-hint-1">
+                        @Localizer["hint1"]
+                    </div>
+
+                    <div class="nhsuk-radios radio-button-text-line-break">
+                        <div class="nhsuk-radios__item">
+                            <input class="nhsuk-radios__input"
+                                    type="radio"
+                                    id="emailChoice"
+                                    asp-for="verifyMethod"
+                                    value="@VerifyMethod.Email"
+                                    aria-description="select to verify with email"/>
+                            <label class="nhsuk-label nhsuk-radios__label" for="emailChoice")">
+                                @Localizer["emailChoiceText"]
+                                <div class="nhsuk-hint no-margin-bottom" id="name-hint-2">
+                                    @Localizer["emailChoiceTextHint"]
+                                </div>
+                            </label>
+                        </div>
+                        <div class="nhsuk-radios__item">
+                            <input class="nhsuk-radios__input"
+                                    type="radio"
+                                    id="phoneChoice"
+                                    asp-for="verifyMethod"
+                                    value="@VerifyMethod.PhoneNumber"
+                                    aria-description="select to verify with phone number"/>
+                            <label class="nhsuk-label nhsuk-radios__label" for="phoneChoice")">
+                                @Localizer["phoneNumberChoiceText"]
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </nhs-form-group>
+
+            <button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["continue"]
+            </button>
+        </form>
+    </div>
+</div>

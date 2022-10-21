@@ -1,0 +1,64 @@
+﻿@using CovidLetter.Frontend.WebApp.Constants
+@inject IViewLocalizer Localizer
+@model VerifyOtpViewModel
+
+@{
+    ViewBag.Title = Localizer["title"];
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form asp-action="VerifyOtp" method="post">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary"/>
+            }
+
+            <nhs-form-group>
+                <fieldset class="nhsuk-fieldset">
+                    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                        <h1 class="nhsuk-fieldset__heading" id="page-title">
+                            @ViewBag.Title
+                        </h1>
+                    </legend>
+
+                    <div class="nhsuk-hint" id="otp-hint">
+                        <p>@Localizer["hint1"]</p>
+                    </div>
+
+                    <nhs-form-group>
+                        <label class="nhsuk-label" for="OtpCode">@Localizer["otpLabel"]</label>
+                        <div class="nhsuk-hint" id="otp-hint-inline">@Localizer["hint2"]</div>                
+                        <span nhs-validation-for="OtpCode"></span>
+                        
+                        <input class="nhsuk-input nhsuk-input--width-10" error-class-toggle="nhsuk-input--error" id="OtpCode" asp-for="OtpCode" type="text" autocomplete="off" aria-description="@ViewBag.Title" aria-required="true">
+                    </nhs-form-group>
+                </fieldset>
+            </nhs-form-group>
+
+            @if (@Model.RemainingOtpAttempts < @ViewBag.defaultAttempts)
+            {
+                <div>
+			        <ul class="nhsuk-list nhsuk-list--tick">
+				        <li>
+					        <partial name="_ExclamationMarkCircle"/>
+					        <strong>@Localizer["otpMatchFailureWarning1", @Model.RemainingOtpAttempts != null ? @Model.RemainingOtpAttempts : @ViewBag.defaultAttempts, @Model.RemainingOtpAttempts > 1 ? "s" : ""]</strong>
+				        </li>
+			        </ul>
+		        </div>
+            }
+
+            <button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["continue"]
+            </button>
+
+            <div>
+                <p>
+                    @Localizer["requestNewOtpText"]
+                    <br/>
+                    <a asp-action="RequestNewOtp" rel="noopener noreferrer" aria-description="@Localizer["internalLinkSameTab"]">@Localizer["requestNewOtpLink"]</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>

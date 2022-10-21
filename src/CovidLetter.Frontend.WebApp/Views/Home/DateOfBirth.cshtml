@@ -1,0 +1,103 @@
+﻿@using CovidLetter.Frontend.WebApp.Constants
+@using CovidLetter.Frontend.WebApp.Services
+@inject IViewLocalizer Localizer
+@model DateOfBirthViewModel
+
+@{
+    ViewBag.Title = Localizer["title"];
+    var isInvalid = !ViewData.ModelState.IsValid;
+    var backButtonLink = $"{UIConstants.Home.WhoAreYouRequestingForRoute}?service={(Model.UserJourney == InitUserJourney.Digital ? "digital" : "letter")}";
+    var backButtonModel = ViewServices.GenerateBackButtonModelUsingHref(@backButtonLink);
+}
+
+@section BackLink
+{
+    <partial name="_BackButton" model="backButtonModel"/>
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form asp-action="DateOfBirth" method="post" novalidate>
+            @Html.HiddenFor(model => model.UserJourney)
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary" />
+            }
+
+            <nhs-form-group>
+                <fieldset class="nhsuk-fieldset" role="group">
+                    <legend class="nhsuk-fieldset__legend nhsuk-label--l">
+                        <h1 class="nhsuk-fieldset__heading" id="page-title">
+                            @ViewBag.Title
+                        </h1>
+                    </legend>
+                    <div class="nhsuk-hint" id="example-hint">
+                        @Localizer["example"]
+                    </div>
+
+                    <span nhs-validation-for="Day" id="nhsuk-error__day"></span>
+                    <span nhs-validation-for="Month" id="nhsuk-error__month"></span>
+                    <span nhs-validation-for="Year" id="nhsuk-error__year"></span>
+
+                    <div class="nhsuk-date-input" id="example">
+                        <div class="nhsuk-date-input__item">
+                            <div class="nhsuk-form-group">
+                                <label class="nhsuk-label nhsuk-date-input__label" asp-for="Day">
+                                    @Localizer["day"]
+                                </label>
+                                <input class="nhsuk-input nhsuk-date-input__input nhsuk-input--width-2"
+                                       asp-for="Day"
+                                       error-class-toggle="nhsuk-input--error"
+                                       error-or="@isInvalid"
+                                       type="text"
+                                       pattern="[0-9]*"
+                                       inputmode="numeric"
+                                       aria-description="@ViewBag.Title"
+                                       aria-required="true">
+                            </div>
+                        </div>
+                        <div class="nhsuk-date-input__item">
+                            <div class="nhsuk-form-group">
+                                <label class="nhsuk-label nhsuk-date-input__label" asp-for="Month">
+                                    @Localizer["month"]
+                                </label>
+                                <input class="nhsuk-input nhsuk-date-input__input nhsuk-input--width-2"
+                                       asp-for="Month"
+                                       error-class-toggle="nhsuk-input--error"
+                                       error-or="@isInvalid"
+                                       type="text"
+                                       pattern="[0-9]*"
+                                       inputmode="numeric"
+                                       aria-description="@ViewBag.Title"
+                                       aria-required="true">
+
+                            </div>
+                        </div>
+                        <div class="nhsuk-date-input__item">
+                            <div class="nhsuk-form-group">
+                                <label class="nhsuk-label nhsuk-date-input__label" asp-for="Year">
+                                    @Localizer["year"]
+                                </label>
+                                <input class="nhsuk-input nhsuk-date-input__input nhsuk-input--width-4"
+                                       asp-for="Year"
+                                       error-class-toggle="nhsuk-input--error"
+                                       error-or="@isInvalid"
+                                       type="text"
+                                       pattern="[0-9]*"
+                                       inputmode="numeric"
+                                       aria-description="@ViewBag.Title"
+                                       aria-required="true">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </nhs-form-group>
+
+            <partial name="_RequestingForSomeoneElse"/>
+            
+            <button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["continue"]
+            </button>
+        </form>
+    </div>
+</div>

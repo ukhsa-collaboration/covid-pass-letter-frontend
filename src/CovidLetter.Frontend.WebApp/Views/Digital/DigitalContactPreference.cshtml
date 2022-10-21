@@ -1,0 +1,77 @@
+﻿@using CovidLetter.Frontend.WebApp.Services
+@model DigitalContactPreferenceViewModel
+@inject IViewLocalizer Localizer
+
+@{
+    ViewBag.Title = Localizer["title"];
+    var backButtonModel = ViewServices.GenerateBackButtonModelUsingHref(@ViewBag.BackLink);
+}
+
+@section BackLink
+{
+    <partial name="_BackButton" model="backButtonModel"/>
+}
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-two-thirds">
+        <form method="post" asp-action="DigitalContactPreference">
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <partial name="_NhsErrorSummary"/>
+            }
+
+            <nhs-form-group>
+                <fieldset class="nhsuk-fieldset">
+                    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                        <h1 class="nhsuk-fieldset__heading" id="page-title">
+                            @ViewBag.Title
+                        </h1>
+                    </legend>
+
+                    <div class="nhsuk-hint" id="name-hint-1">
+                        @Localizer["hint1"]
+                    </div>
+
+                    <div class="nhsuk-hint" id="name-hint-2">
+                        @Localizer["hint2"]
+                    </div>
+
+                    <span nhs-validation-for="Selection"></span>
+
+                    <div class="nhsuk-radios radio-button-text-line-break">
+                        @for (int i = 0; i < Model.ObfuscatedContactDetails.Count; i++)
+                        {
+                            var resourceKey = Model.ObfuscatedContactDetails.ElementAt(i).Value.Contains("@") ? "emailTo" : "mobileTo";
+                            <div class="nhsuk-radios__item">
+                                    <input class="nhsuk-radios__input"
+                                           type="radio"
+                                           id="@(i == 0 ? "Selection" : $"text_{i + 1}")"
+                                           asp-for="Selection"
+                                           value="@Model.ObfuscatedContactDetails.ElementAt(i).Key"
+                                           aria-description="@ViewBag.Title"/>
+                                    <label class="nhsuk-label nhsuk-radios__label" for="@(i == 0 ? "Selection" : $"text_{i + 1}")">
+                                        @Localizer[resourceKey, Model.ObfuscatedContactDetails.ElementAt(i).Value]
+                                    </label>
+                                </div>
+                        }
+                        <div class="nhsuk-radios__item">
+                            <input class="nhsuk-radios__input"
+                                   type="radio"
+                                   id="donotcontact"
+                                   asp-for="Selection"
+                                   value="@DigitalContactPreferenceOptions.NoContact"
+                                   aria-description="@ViewBag.Title"/>
+                            <label class="nhsuk-label nhsuk-radios__label" for="donotcontact">
+                                @Localizer["noContact"]
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+            </nhs-form-group>
+
+            <button class="nhsuk-button" type="submit" aria-label="@Localizer["continueButtonLabel"]">
+                @Localizer["continue"]
+            </button>
+        </form>
+    </div>
+</div>
