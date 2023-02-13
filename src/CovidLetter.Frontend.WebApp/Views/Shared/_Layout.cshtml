@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@(!ViewData.ModelState.IsValid ? "Error: " : "" )@ViewBag.Title - @ViewBag.ServiceName - NHS</title>
+    <title>@(!ViewData.ModelState.IsValid ? "Error: " : "" )@ViewBag.Title - @ViewBag.LetterServiceName - NHS</title>
     <partial name="_LoadStylesheetPartial" />
     @*Assets can be accessed via https://github.com/nhsuk/nhsuk-frontend*@
     <link rel="shortcut icon" href="~/lib/nhsuk-frontend/packages/assets/favicons/favicon.ico" type="image/x-icon">
@@ -31,14 +31,8 @@
         </main>
     </div>
 
-    @if(@ViewBag.IsDigital == true)
-    {
-        <partial name="_DigitalOnlyFooter"/>
-    } else
-    {
-        <partial name="_Footer"/>
-    }
 
+    <partial name="_Footer" />
     <script nonce="@Context.Items["nonce"]">
         /* 
             • each time the page loads it will look for an invalid <input /> field (i.e. within an invalid form)

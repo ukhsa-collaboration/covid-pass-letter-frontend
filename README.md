@@ -39,4 +39,3 @@ If you have further questions about the NHS COVID Pass Letter or email service p
 **Link to the licence file**
 
 https://github.com/nhsx/covid-pass-letter-frontend/blob/main/LICENSE
-

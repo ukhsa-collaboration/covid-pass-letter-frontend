@@ -13,7 +13,6 @@ namespace CovidLetter.Frontend.WebApp.Constants
             public const string InitialRoute = "/";
             public const string HomeController = "Home";
             public const string CookiePolicy = "cookie-policy";
-            public const string CookieConfirmation = "cookie-confirmation";
             public const string SetLanguage = "set-language";
             public const string AccessibilityStatement = "accessibility-statement";
             /* pre-pds pages */

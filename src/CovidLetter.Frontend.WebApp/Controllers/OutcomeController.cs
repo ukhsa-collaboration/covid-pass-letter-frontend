@@ -54,6 +54,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
                 return Redirect(_startPage);
 
             ViewBag.IsDigital = userSessionData.UserJourney?.PrePdsJourney == InitUserJourney.Digital;
+            ViewBag.IsCoronavirusHelplineUser = userSessionData.isCoronavirusHelplineUser;
             TempData.Clear();
 
             return View();
@@ -68,6 +69,8 @@ namespace CovidLetter.Frontend.WebApp.Controllers
 
             if (userSessionData == null)
                 return Redirect(_siteConfiguration.StartPage);
+
+            ViewBag.IsCoronavirusHelplineUser = userSessionData.isCoronavirusHelplineUser;
 
             if (!UserIsPostPds())
                 return RedirectToAction("CheckAnswers", UIConstants.Home.HomeController);
@@ -160,6 +163,8 @@ namespace CovidLetter.Frontend.WebApp.Controllers
 
             viewModel.userRequestAlternativeLanguage = userSessionData.AlternateLetterType.UserRequestedAnotherLanguage.GetValueOrDefault();
             viewModel.postcodeIsWelsh = RegionServices.PostcodeIsInWales(userSessionData.Postcode?.Postcode);
+            ViewBag.IsCoronavirusHelplineUser = userSessionData.isCoronavirusHelplineUser;
+
             return View(viewModel);
         }
 
@@ -283,6 +288,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
                 IsInWales = RegionServices.PostcodeIsInWales(userSessionData.Postcode?.Postcode)
             };
             TempData.Clear();
+            ViewBag.IsCoronavirusHelplineUser = userSessionData.isCoronavirusHelplineUser;
             return View(model);
         }
         
@@ -320,6 +326,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
 
             userSessionData.ImmediatePass = model;
             TempData.Set(userSessionData);
+            ViewBag.IsCoronavirusHelplineUser = userSessionData.isCoronavirusHelplineUser;
 
             return View(model);
         }
@@ -340,6 +347,8 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             {
                 return View(model);
             }
+
+            ViewBag.IsCoronavirusHelplineUser = userSessionData.isCoronavirusHelplineUser;
 
             if (userSessionData.ImmediatePass != null)
             {
@@ -441,6 +450,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             TempData.Set(userSessionData);
 
             ViewBag.userEligibleForImmediatePass = userSessionData.userEligibleForImmediatePass;
+            ViewBag.IsCoronavirusHelplineUser = userSessionData.isCoronavirusHelplineUser;
             return View(model);
         }
 
@@ -572,6 +582,11 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             var dateOfBirth = dateOfBirthViewModel.ToDateTime();
 
             return DateTime.UtcNow.AddYears(-12).Date >= dateOfBirth.Date;
+        }
+
+        private bool GetIsCoronavirusHelplineUser(UserSessionData userSessionData)
+        {
+            return userSessionData?.isCoronavirusHelplineUser == true;
         }
     }
 }

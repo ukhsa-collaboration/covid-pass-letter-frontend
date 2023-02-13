@@ -105,12 +105,14 @@ internal sealed class TelemetryInitializer : ITelemetryInitializer
     private void AddCorrelationId(ISupportProperties? supportProperties)
     {
         var correlationData = TempData?.Get<CorrelationData>();
-        if (correlationData == null)
+
+        if (correlationData == null && supportProperties is not ExceptionTelemetry)
         {
-            return;
+            correlationData = new CorrelationData(Guid.NewGuid());
+            TempData?.Set(correlationData);
         }
 
-        if (supportProperties != null)
+        if (supportProperties != null && correlationData != null)
         {
             supportProperties.Properties[nameof(CorrelationData.CorrelationId)] = correlationData.CorrelationId;
         }

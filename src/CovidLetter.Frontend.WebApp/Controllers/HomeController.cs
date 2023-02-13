@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using System.Collections.Immutable;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Configuration;
 
 namespace CovidLetter.Frontend.WebApp.Controllers
 {
@@ -97,12 +99,17 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             }
             else
             {
-                var userSessionData = TempData.Get<UserSessionData>();
-                if (userSessionData == null)
-                {
-                    TempData.Set(new UserSessionData());
-                }
+                InitialiseSessionStorage(TempData.Get<UserSessionData>(), TempData);
             }
+
+            var userSessionData = TempData.Get<UserSessionData>();
+            if (userSessionData != null)
+            {
+                userSessionData.isCoronavirusHelplineUser = isCoronavirusHelplineUser;
+            }
+
+            ViewBag.IsCoronavirusHelplineUser = isCoronavirusHelplineUser;
+            TempData.Set(userSessionData);
 
             return View(model);
         }
@@ -133,9 +140,8 @@ namespace CovidLetter.Frontend.WebApp.Controllers
         [Route(UIConstants.Home.WhoAreYouRequestingForRoute)]
         public IActionResult WhoAreYouRequestingFor()
         {
+            InitialiseSessionStorage(TempData.Get<UserSessionData>(), TempData);
             var userSessionData = TempData.Get<UserSessionData>();
-            if (userSessionData == null)
-                TempData.Set(userSessionData = new UserSessionData());
 
             string userJourney = Request.Query["service"].ToString().ToLower();
             userSessionData.UserJourney = new UserJourneyModel();
@@ -173,6 +179,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             };
 
             ViewBag.IsDigital = userJourney == "digital";
+            ViewBag.IsCoronavirusHelplineUser = GetIsCoronavirusHelplineUser(userSessionData);
             return View(model);
         }
 
@@ -187,6 +194,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.IsDigital = GetIsDigitalRoute(userSessionData);
+                ViewBag.IsCoronavirusHelplineUser = GetIsCoronavirusHelplineUser(userSessionData);
                 return View(model);
             }
 
@@ -213,6 +221,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             };
 
             ViewBag.IsDigital = GetIsDigitalRoute(userSessionData);
+            ViewBag.IsCoronavirusHelplineUser = GetIsCoronavirusHelplineUser(userSessionData);
 
             return View(model);
         }
@@ -228,6 +237,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.IsDigital = GetIsDigitalRoute(userSessionData);
+                ViewBag.IsCoronavirusHelplineUser = GetIsCoronavirusHelplineUser(userSessionData);
                 return View(model);
             }
 
@@ -260,6 +270,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             };
 
             ViewBag.IsDigital = GetIsDigitalRoute(userSessionData);
+            ViewBag.IsCoronavirusHelplineUser = GetIsCoronavirusHelplineUser(userSessionData);
 
             return View(model);
         }
@@ -275,6 +286,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.IsDigital = GetIsDigitalRoute(userSessionData);
+                ViewBag.IsCoronavirusHelplineUser = GetIsCoronavirusHelplineUser(userSessionData);
                 return View(model);
             }
 
@@ -302,6 +314,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             };
 
             ViewBag.IsDigital = GetIsDigitalRoute(userSessionData);
+            ViewBag.IsCoronavirusHelplineUser = GetIsCoronavirusHelplineUser(userSessionData);
             return View(model);
         }
 
@@ -316,6 +329,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.IsDigital = GetIsDigitalRoute(userSessionData);
+                ViewBag.IsCoronavirusHelplineUser = GetIsCoronavirusHelplineUser(userSessionData);
                 return View(model);
             }
 
@@ -343,6 +357,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
                 ? Url.Action("NhsNumber")!
                 : Url.Action("Name")!;
             ViewBag.IsDigital = GetIsDigitalRoute(userSessionData);
+            ViewBag.IsCoronavirusHelplineUser = GetIsCoronavirusHelplineUser(userSessionData);
 
             return View(model);
         }
@@ -360,6 +375,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
                 var knowsNhsNumber = (userSessionData.NhsNumber?.KnowsNhsNumber).GetValueOrDefault();
                 ViewBag.BackLink = knowsNhsNumber ? Url.Action("NhsNumber") : Url.Action("Name");
                 ViewBag.IsDigital = GetIsDigitalRoute(userSessionData);
+                ViewBag.IsCoronavirusHelplineUser = GetIsCoronavirusHelplineUser(userSessionData);
 
                 return View(model);
             }
@@ -393,7 +409,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             {
                 var returnPage = GetRedirectActionForCorruptUserSessionOrDefault(userSessionData, "Postcode");
                 if (returnPage == nameof(WhoAreYouRequestingFor))
-                    return RedirectToAction(returnPage, new { service = GetIsDigitalRoute(userSessionData) ? "digital" : "letter" });
+                    return RedirectToAction(returnPage, new { service = GetIsDigitalRoute(userSessionData) ? "digital" : "letter", });
                 else
                     return RedirectToAction(returnPage);
             }
@@ -417,6 +433,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             };
 
             ViewBag.IsDigital = GetIsDigitalRoute(userSessionData);
+            ViewBag.IsCoronavirusHelplineUser = GetIsCoronavirusHelplineUser(userSessionData);
             return View("CheckAnswers", model);
         }
 
@@ -468,25 +485,15 @@ namespace CovidLetter.Frontend.WebApp.Controllers
         [Route(UIConstants.Home.CookiePolicy)]
         public IActionResult CookiePolicy()
         {
+            ViewBag.HideFooter = true;
             var userSessionData = TempData.Get<UserSessionData>();
+            
             if (userSessionData != null)
             {
                 ViewBag.IsDigital = GetIsDigitalRoute(userSessionData);
+                ViewBag.IsCoronavirusHelplineUser = GetIsCoronavirusHelplineUser(userSessionData);
             }
-
-            return View();
-        }
-
-        [HttpGet]
-        [Route(UIConstants.Home.CookieConfirmation)]
-        public IActionResult CookieConfirmation() 
-        {
-            var userSessionData = TempData.Get<UserSessionData>();
-            if (userSessionData != null)
-            {
-                ViewBag.IsDigital = GetIsDigitalRoute(userSessionData);
-            }
-
+            
             return View();
         }
 
@@ -494,6 +501,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
         [Route(UIConstants.Home.AccessibilityStatement)]
         public IActionResult AccessibilityStatement()
         {
+            ViewBag.HideFooter = true;
             return View();
         }
 
@@ -548,6 +556,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             if (userSessionData != null)
             {
                 ViewBag.IsDigital = GetIsDigitalRoute(userSessionData);
+                ViewBag.IsCoronavirusHelplineUser = GetIsCoronavirusHelplineUser(userSessionData);
             }
 
             return View();
@@ -636,6 +645,11 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             return userSessionData?.UserJourney?.PrePdsJourney == InitUserJourney.Digital;
         }
 
+        private bool GetIsCoronavirusHelplineUser(UserSessionData userSessionData)
+        {
+            return userSessionData?.isCoronavirusHelplineUser == true;
+        }
+
         private static void setUserLanguage(HttpResponse response, string languageCulture)
         {
             response.Cookies.Append(
@@ -643,6 +657,12 @@ namespace CovidLetter.Frontend.WebApp.Controllers
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(languageCulture)),
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1), Secure = true }
             );
+        }
+
+        private static void InitialiseSessionStorage(UserSessionData userSessionData, ITempDataDictionary tempData)
+        {
+            if (userSessionData == null)
+                tempData.Set(new UserSessionData());
         }
     }
 }

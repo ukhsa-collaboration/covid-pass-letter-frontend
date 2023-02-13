@@ -12,7 +12,8 @@
     var radioConditionalClass = forSomeoneElse
         ? string.Empty
         : "nhsuk-radios__conditional--hidden";
-    var backButtonModel = ViewServices.GenerateBackButtonModelUsingHref(@SiteConfiguration.Value.StartPage);
+    var emergencyHref = ViewBag.IsCoronavirusHelplineUser == true ? "?119=true" : "";
+    var backButtonModel = ViewServices.GenerateBackButtonModelUsingHref(@SiteConfiguration.Value.StartPage + emergencyHref);
 }
 
 @if (!ViewBag.IsDigital)

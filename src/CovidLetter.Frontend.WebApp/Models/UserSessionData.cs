@@ -44,6 +44,8 @@
 
         public int? remainingEmailAttempts { get; set; }
 
-        public int? remainingOtpAttempts { get; set; }  
+        public int? remainingOtpAttempts { get; set; }
+
+        public bool isCoronavirusHelplineUser { get; set; }
     }
 }

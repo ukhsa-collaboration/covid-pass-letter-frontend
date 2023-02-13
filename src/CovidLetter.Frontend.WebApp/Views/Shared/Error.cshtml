@@ -6,11 +6,12 @@
 @{
     ViewBag.Title = Localizer["title"];
     var startPage = SiteConfiguration.Value.StartPage;
+    var emergencyHref = ViewBag.IsCoronavirusHelplineUser == true ? "?119=true" : "";
 }
 
 <h1 id="page-title">@Localizer["subtitle"]</h1>
 <p>@Localizer["hint"]</p>
 
-<a href="@startPage" id="backToHomeLink" role="button" draggable="false" class="nhsuk-button ">
+<a href="@startPage@emergencyHref" id="backToHomeLink" role="button" draggable="false" class="nhsuk-button ">
     @Localizer["back"]
 </a>

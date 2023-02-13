@@ -4,6 +4,7 @@
 @inject IViewLocalizer Localizer
 @{
     ViewBag.Title = Localizer["title"];
+    var emergencyHref = ViewBag.IsCoronavirusHelplineUser == true ? "?119=true" : "";
 }
 
 <div class="nhsuk-grid-row">
@@ -14,7 +15,7 @@
         <p>@Localizer["para2"]</p>
         <p>@Localizer["para3"]</p>
 
-        <a href="@SiteConfiguration.Value.StartPage" class="nhsuk-button" aria-description="@Localizer["tryAgainButtonLabel"]">
+        <a href="@SiteConfiguration.Value.StartPage@emergencyHref" class="nhsuk-button" aria-description="@Localizer["tryAgainButtonLabel"]">
             @Localizer["tryAgain"]
         </a>
     </div>

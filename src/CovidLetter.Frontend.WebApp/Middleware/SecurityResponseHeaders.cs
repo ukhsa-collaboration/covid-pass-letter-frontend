@@ -12,7 +12,6 @@ namespace CovidLetter.Frontend.WebApp.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-
             var nonceValue = $"{Guid.NewGuid()}";
             context.Items["nonce"] = nonceValue;
 
