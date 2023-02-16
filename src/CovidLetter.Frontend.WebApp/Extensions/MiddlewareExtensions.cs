@@ -6,7 +6,7 @@ namespace CovidLetter.Frontend.WebApp.Extensions
     public static class MiddlewareExtensions
     {
         public static IApplicationBuilder UseCacheResponseHeaders(this IApplicationBuilder builder) =>
-            builder.UseMiddleware<ResponseHeaders>();
+            builder.UseMiddleware<CacheResponseHeaders>();
 
         public static IApplicationBuilder UseSecurityResponseHeaders(this IApplicationBuilder builder) =>
             builder.UseMiddleware<SecurityResponseHeaders>();

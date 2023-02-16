@@ -41,7 +41,7 @@ namespace CovidLetter.Frontend.AccessTokenCache.Services
             client.DefaultRequestHeaders.Clear();
         }
 
-        public async Task<string> FetchToken()
+        public async Task<string> FetchTokenAsync()
         {
             if (!_memoryCache.TryGetValue(MemoryCacheTokenAccessor, out string token))
             {

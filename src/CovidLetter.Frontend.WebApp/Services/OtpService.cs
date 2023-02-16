@@ -5,14 +5,14 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using CovidLetter.Frontend.Extensions;
+using CovidLetter.Frontend.Search;
 using CovidLetter.Frontend.WebApp.Configuration;
 using CovidLetter.Frontend.WebApp.Models;
-using CovidLetter.Frontend.WebApp.Services;
 using Microsoft.Extensions.Options;
 
 [assembly: InternalsVisibleTo("CovidLetter.Frontend.Search.Tests")]
 
-namespace CovidLetter.Frontend.Search
+namespace CovidLetter.Frontend.WebApp.Services
 {
     public class OtpService : IOtpService
     {

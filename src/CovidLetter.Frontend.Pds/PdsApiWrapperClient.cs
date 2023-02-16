@@ -142,7 +142,7 @@ namespace CovidLetter.Frontend.Pds
         {
             try
             {
-                var accessToken = await _tokenCacheService.FetchToken();
+                var accessToken = await _tokenCacheService.FetchTokenAsync();
 
                 if (!string.IsNullOrWhiteSpace(accessToken))
                 {

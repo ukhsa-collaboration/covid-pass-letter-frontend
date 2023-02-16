@@ -10,4 +10,4 @@ namespace CovidLetter.Frontend.Extensions
                && modelStateDictionary.TryGetValue(fieldName, out var entry)
                && (entry.Errors?.Any() ?? false);
     }
-}
+}   

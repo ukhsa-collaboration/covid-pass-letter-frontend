@@ -4,11 +4,11 @@ using Microsoft.Net.Http.Headers;
 
 namespace CovidLetter.Frontend.WebApp.Middleware
 {
-    public sealed class ResponseHeaders
+    public sealed class CacheResponseHeaders
     {
         private readonly RequestDelegate _next;
 
-        public ResponseHeaders(RequestDelegate next)
+        public CacheResponseHeaders(RequestDelegate next)
         {
             _next = next;
         }

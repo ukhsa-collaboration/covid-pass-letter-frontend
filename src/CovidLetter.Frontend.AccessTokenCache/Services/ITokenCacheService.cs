@@ -4,6 +4,6 @@ namespace CovidLetter.Frontend.AccessTokenCache.Services
 {
     public interface ITokenCacheService
     {
-        Task<string> FetchToken();
+        Task<string> FetchTokenAsync();
     }
 }
