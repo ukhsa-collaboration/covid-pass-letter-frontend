@@ -25,9 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CovidLetter.Frontend.Search
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CovidLetter.Frontend.WebApp", "src\CovidLetter.Frontend.WebApp\CovidLetter.Frontend.WebApp.csproj", "{516BBCE8-197E-446D-B573-178E6E2D743C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CovidLetter.Frontend.Extensions.Tests", "tests\CovidLetter.Frontend.Extensions.Tests\CovidLetter.Frontend.Extensions.Tests.csproj", "{9FE38B5A-1878-4B28-9BDC-E59B3F1BC730}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CovidLetter.Frontend.Extensions.Tests", "tests\CovidLetter.Frontend.Extensions.Tests\CovidLetter.Frontend.Extensions.Tests.csproj", "{9FE38B5A-1878-4B28-9BDC-E59B3F1BC730}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CovidLetter.Frontend.AccessTokenCache.Tests", "tests\CovidLetter.Frontend.AccessTokenCache.Tests\CovidLetter.Frontend.AccessTokenCache.Tests.csproj", "{BC6DA854-02D3-4E7B-A2EC-ECFFA3609CC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CovidLetter.Frontend.Pds.Tests", "tests\CovidLetter.Frontend.Pds.Tests\CovidLetter.Frontend.Pds.Tests.csproj", "{F2139AC5-6D1E-4D2C-8381-DA2703C9DF81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{BC6DA854-02D3-4E7B-A2EC-ECFFA3609CC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC6DA854-02D3-4E7B-A2EC-ECFFA3609CC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC6DA854-02D3-4E7B-A2EC-ECFFA3609CC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2139AC5-6D1E-4D2C-8381-DA2703C9DF81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2139AC5-6D1E-4D2C-8381-DA2703C9DF81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2139AC5-6D1E-4D2C-8381-DA2703C9DF81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2139AC5-6D1E-4D2C-8381-DA2703C9DF81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

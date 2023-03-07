@@ -124,7 +124,7 @@ namespace CovidLetter.Frontend.Search
 
                 if (searchPatientRequest.userIsDigitalJourney)
                     return ProcessUserForDigitalJourney(
-                        searchPatientRequest.userHasWelshPostcode, 
+                        searchPatientRequest.userHasWelshPostcode,
                         userDetail,
                         mobilePhoneNumbers,
                         emailAddresses,
@@ -160,6 +160,11 @@ namespace CovidLetter.Frontend.Search
 
                 if (getPatientResult != null)
                 {
+                    if (getPatientResult.Status == ApiResponseStatus.TooManyRequests)
+                    {
+                        return new SearchPatientResult.TooManyRequests();
+                    }
+
                     if (getPatientResult.Status == ApiResponseStatus.Success)
                     {
                         if (IsDeceased(getPatientResult.ResponseData))
@@ -217,10 +222,6 @@ namespace CovidLetter.Frontend.Search
                             );
                         }
                     }
-                }
-                else if (getPatientResult.Status == ApiResponseStatus.TooManyRequests)
-                {
-                    return new SearchPatientResult.TooManyRequests();
                 }
 
                 return new SearchPatientResult.NoMatches();
@@ -528,7 +529,7 @@ namespace CovidLetter.Frontend.Search
 
             if (userHasWelshPostcode)
                 return new SearchPatientResult.MatchFoundButWelshPostcode();
-            
+
             if (userHasAMobileNumber && userHasAnEmailAddress)
             {
                 return new SearchPatientResult.SuccessWithMobileAndEmail(userDetail: userDetail,
@@ -578,7 +579,7 @@ namespace CovidLetter.Frontend.Search
                     emails: emailAddresses,
                     addresses: addresses
                 );
-            
+
             return new SearchPatientResult.SuccessWithAccessibility(userDetail: userDetail,
                 mobiles: mobilePhoneNumbers,
                 emails: emailAddresses,
@@ -598,7 +599,7 @@ namespace CovidLetter.Frontend.Search
             };
         }
 
-        private static bool UserHasNoContactDetails(IList<string> mobilePhoneNumbers, IList<string> emailAddresses, IList<Address> addresses) 
+        private static bool UserHasNoContactDetails(IList<string> mobilePhoneNumbers, IList<string> emailAddresses, IList<Address> addresses)
         {
             return !mobilePhoneNumbers.Any() && !emailAddresses.Any() && !addresses.Any();
         }
