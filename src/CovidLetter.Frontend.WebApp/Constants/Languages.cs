@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace CovidLetter.Frontend.WebApp.Constants
 {
     public class Languages
     {
-        public static readonly List<string> Codes = new()
+        public static readonly ImmutableList<string> Codes = new List<string>()
         {
             "ar",
             "bn",
@@ -23,6 +24,6 @@ namespace CovidLetter.Frontend.WebApp.Constants
             "ro",
             "es",
             "ur"
-        };
+        }.ToImmutableList();
     }
 }

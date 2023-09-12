@@ -4,7 +4,7 @@ namespace CovidLetter.Frontend.WebApp.Configuration
 {
     public class SiteConfiguration
     {
-        public static string Identifier = "SiteConfiguration";
+        public const string Identifier = "SiteConfiguration";
 
         public string StartPage => UIConstants.Home.RequestLetterForTravelRoute;
 

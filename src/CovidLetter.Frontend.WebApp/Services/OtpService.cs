@@ -75,24 +75,24 @@ namespace CovidLetter.Frontend.WebApp.Services
         }
 
         public async Task<RequestOtpResult> RequestOtp(
-            string phoneNumber,
+            string mobileNumber,
             string correlationId)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, $"{_requestOperation}");
 
-            request.Headers.Add("phoneNumber", SearchPatientService.IsValidUkMobilePhoneNumber(phoneNumber) ?
-                SearchPatientService.ConvertUkNumberToInternationalFormat(phoneNumber) :
-                phoneNumber);
+            request.Headers.Add("phoneNumber", SearchPatientService.IsValidUkMobilePhoneNumber(mobileNumber) ?
+                SearchPatientService.ConvertUkNumberToInternationalFormat(mobileNumber) :
+                mobileNumber);
 
             using var response =
                 await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, CancellationToken.None);
 
             if (response.IsSuccessStatusCode)
             {
-                return new RequestOtpResult.Success(phoneNumber);
+                return new RequestOtpResult.Success(mobileNumber);
             }
 
-            return response.StatusCode == HttpStatusCode.TooManyRequests ? new RequestOtpResult.TooManyRequests(phoneNumber) : new RequestOtpResult.Failed(phoneNumber);
+            return response.StatusCode == HttpStatusCode.TooManyRequests ? new RequestOtpResult.TooManyRequests(mobileNumber) : new RequestOtpResult.Failed(mobileNumber);
         }
     }
 }

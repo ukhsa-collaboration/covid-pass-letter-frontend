@@ -124,7 +124,6 @@ namespace CovidLetter.Frontend.Search
 
                 if (searchPatientRequest.userIsDigitalJourney)
                     return ProcessUserForDigitalJourney(
-                        searchPatientRequest.userHasWelshPostcode,
                         userDetail,
                         mobilePhoneNumbers,
                         emailAddresses,
@@ -206,7 +205,6 @@ namespace CovidLetter.Frontend.Search
 
                             if (journeyIsDigital)
                                 return ProcessUserForDigitalJourney(
-                                    postcodeIsWelsh,
                                     userDetail,
                                     mobilePhoneNumbers,
                                     emailAddresses,
@@ -518,7 +516,6 @@ namespace CovidLetter.Frontend.Search
         }
 
         private static SearchPatientResult ProcessUserForDigitalJourney(
-            bool userHasWelshPostcode,
             UserDetail userDetail,
             IList<string> mobilePhoneNumbers,
             IList<string> emailAddresses,
@@ -526,9 +523,6 @@ namespace CovidLetter.Frontend.Search
         ) {
             var userHasAMobileNumber = mobilePhoneNumbers.Any();
             var userHasAnEmailAddress = emailAddresses.Any();
-
-            if (userHasWelshPostcode)
-                return new SearchPatientResult.MatchFoundButWelshPostcode();
 
             if (userHasAMobileNumber && userHasAnEmailAddress)
             {

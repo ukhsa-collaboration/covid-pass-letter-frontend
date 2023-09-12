@@ -9,7 +9,6 @@ namespace CovidLetter.Frontend.Search
         T Visit(SearchPatientResult.SuccessWithEmail result);
         T Visit(SearchPatientResult.MoreThanOneMatch result);
         T Visit(SearchPatientResult.NoMatches result);
-        T Visit(SearchPatientResult.MatchFoundButWelshPostcode result);
         T Visit(SearchPatientResult.TooManyRequests result);
         T Visit(SearchPatientResult.MatchedButDeceased result);
         T Visit(SearchPatientResult.NoContactDetailsFound result);

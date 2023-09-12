@@ -2,7 +2,7 @@ namespace CovidLetter.Frontend.Queue
 {
     public class QueueConfig
     {
-        public static string Identifier = "QueueConfigStorage";
+        public const string Identifier = "QueueConfigStorage";
 
         public string ConnectionString { get; set; }
 

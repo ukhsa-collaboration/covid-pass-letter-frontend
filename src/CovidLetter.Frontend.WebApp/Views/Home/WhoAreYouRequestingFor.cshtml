@@ -39,6 +39,13 @@
                         </h1>
                     </legend>
 
+                    @if (ViewBag.IsDigital)
+                    {
+                        <div class="nhsuk-hint" id="eligibilityDisclaimer">
+                            @Localizer["eligibilityDisclaimer"]
+                        </div>
+                    }
+
                     <span nhs-validation-for="RequestingFor"></span>
 
                     <div class="nhsuk-radios nhsuk-radios--conditional">

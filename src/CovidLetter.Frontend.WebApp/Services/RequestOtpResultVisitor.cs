@@ -8,19 +8,16 @@ using CovidLetter.Frontend.WebApp.Extensions;
 using CovidLetter.Frontend.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.Extensions.Logging;
 
 namespace CovidLetter.Frontend.WebApp.Services
 {
     internal class RequestOtpResultVisitor : IRequestOtpResultVisitor<IActionResult>
     {
         private readonly ITempDataDictionary _tempData;
-        private readonly ILogger _logger;
 
-        public RequestOtpResultVisitor(ITempDataDictionary tempData, ILogger logger)
+        public RequestOtpResultVisitor(ITempDataDictionary tempData)
         {
             _tempData = tempData;
-            _logger = logger;
         }
 
         public IActionResult Visit(RequestOtpResult.Success result)

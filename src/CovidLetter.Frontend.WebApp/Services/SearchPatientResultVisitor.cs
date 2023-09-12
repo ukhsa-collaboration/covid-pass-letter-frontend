@@ -170,17 +170,6 @@ namespace CovidLetter.Frontend.WebApp.Services
             return new RedirectToActionResult(nameof(OutcomeController.NoMatch), UIConstants.Outcome.OutcomeController, null);
         }
 
-        public IActionResult Visit(SearchPatientResult.MatchFoundButWelshPostcode result)
-        {
-            LogInformation(false, "Unsuccessful - match found but 12+ user has welsh postcode");
-
-            var userPdsStatus = new UserPdsStatusModel(new UserJourneyModel() { UserHasTravelledThroughPds = true });
-            ResetEligibilityForImmediatePass(false);
-            _tempData.Set(userPdsStatus);
-
-            return new RedirectToActionResult(nameof(DigitalController.UserNotEligibleForDigitalFlow), UIConstants.Digital.DigitalController, null);
-        }
-
         public IActionResult Visit(SearchPatientResult.MatchedButDeceased result)
         {
             LogInformation(false, "Unsuccessful - deceased");

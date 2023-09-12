@@ -59,7 +59,6 @@ namespace CovidLetter.Frontend.WebApp.Constants
             public const string VerifyEmail = "verify-email";
             public const string HowToContact = "digital-how-would-you-like-to-be-contacted";
             /* end of flow pages */
-            public const string UserNotEligibleForDigitalFlow = "user-not-eligible-for-digital-flow";
             public const string UserFoundWithoutContactDetails = "gp-record-found-without-contact-details";
             public const string Submitted = "digital-submitted";
             public const string MaximumAttemptsReached = "maximum-attempts-reached";

@@ -32,6 +32,14 @@ To clone the repository:
 1. Open a new CMD instance (if installed use git bash) and navigate to the destination directory where you'd like the cloned repository to exist. If necessary, create this folder first.
 2. Execute the command: git clone https://github.com/ukhsa-collaboration/covid-pass-letter-frontend.git
 
+## For More Information
+
+If you have further questions about the NHS COVID Pass Letter or email service please email covidcertstatuspmo@nhsbsa.nhs.uk
+
+**Link to the licence file**
+
+https://github.com/ukhsa-collaboration/covid-pass-letter-frontend/blob/main/LICENSE
+
 ### Gitleaks Setup
 Gitleaks is implemented in this repo. Gitleaks will scan any commit against a list of regex rules to scan. Please follow these steps to setup Gitleaks:
 - Install Pre-commit to enable the gitleaks hook
@@ -50,11 +58,3 @@ pre-commit autoupdate
 pre-commit install
 ```
 A gitleaks scan will now run automatically on every commit.
-
-## For More Information
-
-If you have further questions about the NHS COVID Pass Letter or email service please email covidcertstatuspmo@nhsbsa.nhs.uk
-
-**Link to the licence file**
-
-https://github.com/ukhsa-collaboration/covid-pass-letter-frontend/blob/main/LICENSE

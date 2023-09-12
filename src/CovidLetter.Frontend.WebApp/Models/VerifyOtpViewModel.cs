@@ -49,8 +49,9 @@ namespace CovidLetter.Frontend.WebApp.Models
             var otpIsOnlyDigits = pattern.IsMatch(OtpCode);
 
             if (!otpIsOnlyDigits)
-            yield return new(localizer["noneDigitsInOtp"], new[] { nameof(OtpCode) });
-
+            {
+                yield return new(localizer["noneDigitsInOtp"], new[] { nameof(OtpCode) });
+            }
         }
     }
 }

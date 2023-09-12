@@ -9,10 +9,9 @@ namespace CovidLetter.Frontend.WebApp.Models
     {
         public VerifyMethod? verifyMethod { get; set; }
     }
-}
-
-public enum VerifyMethod
-{
-    Email,
-    PhoneNumber
+    public enum VerifyMethod
+    {
+        Email,
+        PhoneNumber
+    }
 }

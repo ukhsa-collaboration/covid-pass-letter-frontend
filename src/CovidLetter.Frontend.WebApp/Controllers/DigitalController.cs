@@ -22,11 +22,9 @@ namespace CovidLetter.Frontend.WebApp.Controllers
         private readonly DigitalModelService _digitalModelService;
         private readonly string _startPage;
         private readonly SiteConfiguration _siteConfiguration;
-        private readonly IStringLocalizer<ContactPreferenceViewModel> _contactPreferenceLocalizer;
         private readonly IStringLocalizer<VerifyOtpViewModel> _verifyOtpLocalizer;
         private readonly IOtpService _otpService;
         private readonly IStringLocalizer<InputEmailViewModel> _inputEmailLocalizer;
-        private readonly IStringLocalizer<DigitalContactPreferenceViewModel> _digitalContactPreferenceViewModelLocalizer;
         private readonly IStringLocalizer<VerifyEmailViewModel> _verifyEmailLocalizer;
 
         public DigitalController(
@@ -34,12 +32,10 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             LetterRequestService letterRequestService,
             IOptions<SiteConfiguration> siteConfiguration,
             OutcomeModelService outcomeModelService,
-            IStringLocalizer<ContactPreferenceViewModel> contactPreferenceLocalizer,
             IOtpService otpService,
             IStringLocalizer<VerifyOtpViewModel> verifyOtpLocalizer,
             DigitalModelService digitalModelService,
             IStringLocalizer<InputEmailViewModel> inputEmailLocalizer,
-            IStringLocalizer<DigitalContactPreferenceViewModel> digitalContactPreferenceViewModelLocalizer,
             IStringLocalizer<VerifyEmailViewModel> verifyEmailLocalizer)
         {
             _logger = logger;
@@ -47,17 +43,15 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             _digitalModelService = digitalModelService;
             _startPage = siteConfiguration.Value.StartPage;
             _siteConfiguration = siteConfiguration.Value;
-            _contactPreferenceLocalizer = contactPreferenceLocalizer;
             _inputEmailLocalizer = inputEmailLocalizer;
-            _digitalContactPreferenceViewModelLocalizer = digitalContactPreferenceViewModelLocalizer;
             _verifyEmailLocalizer = verifyEmailLocalizer;
             _otpService = otpService;
             _verifyOtpLocalizer = verifyOtpLocalizer;
         }
 
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-            base.OnActionExecuting(filterContext);
+            base.OnActionExecuting(context);
             ViewBag.IsDigital = true;
         }
 
@@ -200,7 +194,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             RequestOtpResult result;
 
             result = await _otpService.RequestOtp(userSessionData.VerifyMobile.MobileNumber, TempData.GetCorrelationId());
-            return result.Accept(new RequestOtpResultVisitor(TempData, _logger));
+            return result.Accept(new RequestOtpResultVisitor(TempData));
         }
 
         [HttpGet]
@@ -298,7 +292,7 @@ namespace CovidLetter.Frontend.WebApp.Controllers
             RequestOtpResult result;
             result = await _otpService.RequestOtp(userSessionData!.VerifyMobile!.MobileNumber, TempData.GetCorrelationId());
 
-            return result.Accept(new RequestOtpResultVisitor(TempData, _logger));
+            return result.Accept(new RequestOtpResultVisitor(TempData));
         }
 
         [HttpGet]
@@ -678,27 +672,6 @@ namespace CovidLetter.Frontend.WebApp.Controllers
         [HttpGet]
         [Route(UIConstants.Digital.UserFoundWithoutContactDetails)]
         public IActionResult NoContactDetailsFound()
-        {
-            var userSessionData = TempData.Get<UserSessionData>();
-
-            if (userSessionData == null)
-                return Redirect(_startPage);
-
-            if (!userIsPostPds())
-                return RedirectToAction("CheckAnswers", UIConstants.Home.HomeController);
-
-            if (userSessionData.UserJourney == null || userSessionData.UserJourney.PrePdsJourney == InitUserJourney.Letter)
-                return Redirect(_startPage);
-
-            ViewBag.IsDigital = userSessionData.UserJourney.PrePdsJourney == InitUserJourney.Digital;
-
-            TempData.Clear();
-            return View();
-        }
-
-        [HttpGet]
-        [Route(UIConstants.Digital.UserNotEligibleForDigitalFlow)]
-        public IActionResult UserNotEligibleForDigitalFlow()
         {
             var userSessionData = TempData.Get<UserSessionData>();
 

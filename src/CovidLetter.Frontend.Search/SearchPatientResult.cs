@@ -180,14 +180,6 @@ namespace CovidLetter.Frontend.Search
             }
         }
 
-        public class MatchFoundButWelshPostcode : SearchPatientResult
-        {
-            public override T Accept<T>(ISearchPatientResultVisitor<T> visitor)
-            {
-                return visitor.Visit(this);
-            }
-        }
-
         public class MatchedButDeceased : SearchPatientResult
         {
             public override T Accept<T>(ISearchPatientResultVisitor<T> visitor)
